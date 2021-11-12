@@ -1,0 +1,385 @@
+<div id="loader" class="loader" style="display:none ;">
+    <img src="<?= $iniObj->UIPath ?>/img/loader.gif">
+    <h3>Patienter un moment</h3>
+</div>
+
+<?php
+if ($iniObj->debugViews)
+    echo __FILE__;
+$title = "Commandes || Tableau de bord || " . $iniObj->serviceName;
+include _VIEW_PATH . '/dashboard_head.phtml';
+include _VIEW_PATH . $lib->lang . '/dashboard_header.phtml';
+include _VIEW_PATH . $lib->lang . '/dashboard_sidebar.phtml';
+?>
+
+<div id="loader" class="loader" style="display:none ;">
+    <img src="<?= $iniObj->UIPath ?>/img/loader.gif">
+    <h3>Un email vous sera envoyer pour la suite du paiement</h3>
+</div>
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0 font-size-18">Commandes</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+            <?php if ($_SESSION['customer']['role_id'] == 1) : ?>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Toutes les commandes</h4>
+                                <p class="card-subtitle mb-4">
+                                </p>
+
+                                <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap">
+                                    <thead>
+                                        <th>Code</th>
+                                        <th>Date</th>
+                                        <th>Effectuer par</th>
+                                        <th>Statut</th>
+                                        <th>Action</th>
+                                        <th>Action</th>
+                                    </thead>
+
+                                    <tbody id="">
+                                        <?php foreach ($orders['data'] as $key => $order) : ?>
+                                            <tr class="commande" id="">
+                                                <td><?= $order->code ?> <input type="hidden" id="order_id" value="<?= $order->order_id ?>"> </td>
+                                                <td><?= $order->date ?></td>
+                                                <td><?= ucfirst($order->lastname) . ' ' . ucfirst($order->firstname) ?></td>
+                                                <td>
+                                                    <?php
+                                                    if ($order->status == 2)
+                                                        echo '<span class="badge badge-soft-warning">En cours de traitement</span>';
+                                                    elseif ($order->status == 1)
+                                                        echo '<span class="badge badge-soft-success">Acceptée</span>';
+                                                    elseif ($order->status == 0)
+                                                        echo '<span class="badge badge-soft-danger">Rejetée</span>';
+                                                    elseif ($order->status == 4)
+                                                        echo '<span class="badge badge-soft-primary"><a onclick="confirmPay(' . $order->order_id . ')" href="javascript:void(0)" title="cliquer ici pour confirmer le paiement">Paiement en cours</a></span>';
+                                                    ?>
+                                                </td>
+                                                <td><a href="javascript:void(0)" title="Détails" data-id="<?= $order->order_id ?>" class="" onclick="loadOrder(this.getAttribute('data-id'))">
+                                                        <span class="badge badge-light badge-pill"><i class="fa fa-eye"></i></span></a></td>
+                                                <td>
+                                                    <?php if ($order->status == 1 || $order->status == 2) : ?>
+                                                        <div class="btn-group" role="group">
+                                                            <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                Changer Statut <i class="mdi mdi-chevron-down"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                                <a class="dropdown-item switchStat" data-orderid="<?= $order->order_id ?>" data-id="2" href="javascript:void(0)" onclick="switchStat(this.getAttribute('data-id'), this.getAttribute('data-orderid'))">En cours</a>
+                                                                <a class="dropdown-item switchStat" data-orderid="<?= $order->order_id ?>" data-id="1" href="javascript:void(0)" onclick="switchStat(this.getAttribute('data-id'), this.getAttribute('data-orderid'))">Acceptée</a>
+                                                                <a class="dropdown-item switchStat" data-orderid="<?= $order->order_id ?>" data-id="0" href="javascript:void(0)" onclick="switchStat(this.getAttribute('data-id'), this.getAttribute('data-orderid'))">Rejetée</a>
+                                                            </div>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+
+                                    </tbody>
+
+                                </table>
+                            </div> <!-- end card body-->
+                        </div> <!-- end card -->
+                    </div><!-- end col-->
+                </div>
+                <!-- end row-->
+            <?php endif; ?>
+            <?php if ($_SESSION['customer']['role_id'] == 2) : ?>
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Mes Commandes</h4>
+                                <p class="card-subtitle mb-4">
+                                </p>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Code</th>
+                                                <th>Date</th>
+                                                <th>Total</th>
+                                                <th>Statut</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($userOrder['data'] as $key => $order) : ?>
+                                                <tr>
+                                                    <th scope="row"><?= $order->code ?></th>
+                                                    <td style="display: none;" id=""><?= $order->order_id ?></td>
+                                                    <td><?= $order->creation_date ?></td>
+                                                    <td><?= $order->total ?></td>
+                                                    <td><?php
+                                                        if ($order->status == 2)
+                                                            echo '<span class="badge badge-soft-warning badge-pill">En cours de traitement</span>';
+                                                        elseif ($order->status == 1)
+                                                            echo '<span class="badge badge-soft-success badge-pill">Acceptée</span>';
+                                                        elseif ($order->status == 4)
+                                                            echo '<a href="javascript:void(0)" title="Veillez consulter vos mails pour pouvoir finaliser ce paiement" ><span class="badge badge-soft-primary badge-pill">Paiement en cours </span></a>';
+                                                        elseif ($order->status == 0)
+                                                            echo '<span class="badge badge-soft-danger badge-pill">Commande Rejetée</a></span>';
+                                                        ?>
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:void(0)" title="Détails" data-id="<?= $order->order_id ?>" class="" onclick="loadOrder(this.getAttribute('data-id'))">
+                                                            <span class="badge badge-light badge-pill"><i class="fa fa-eye"></i></span></a>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- end card-body-->
+                        </div>
+                        <!-- end card -->
+
+                    </div>
+                    <!-- end col -->
+                </div>
+            <?php endif; ?>
+
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+    <div class="modal fade bd-example-modal-xl" id="orderdetail" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title h4" id="myExtraLargeModalLabel">Détails commande</h5>
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="details">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /*$(document).ready(function() {
+            $.ajax({
+                method: "POST",
+                url: "/ajaxorder",
+                success: function(msg) {
+                    //console.log(msg);
+                    $("#orderframe").html(msg);
+                }
+            })
+        });*/
+
+        function confirmPay(id) {
+            //console.log(id);
+            document.getElementById("loader").style.display = "inline-block";
+            $.ajax({
+                method: "POST",
+                url: "/cofirmpay",
+                data: {
+                    id: id
+                },
+                success: function(msg) {
+                    console.log(msg);
+                    var val = msg.split("||");
+                    if (val[0] == "true") {
+                        toastr["success"](val[1]);
+                        location.reload();
+                    } else if (val[0] == "false") {
+                        toastr["danger"](val[1]);
+                    }
+                }
+            })
+        }
+
+        function switchStat(id, order) {
+            //var order = document.getElementsByClassName("commande")[0].id;
+            //var order = $("#order_id").val();
+            //alert(order);
+
+            document.getElementById("loader").style.display = "inline-block";
+            $.ajax({
+                method: "POST",
+                url: "/swichtStat",
+                data: {
+                    id: id,
+                    order: order
+                },
+                success: function(msg) {
+                    console.log(msg);
+                    var val = msg.split("||");
+                    if (val[0] == "true") {
+                        document.getElementById("loader").style.display = "none";
+                        location.reload();
+                    } else if (val[0] == "false") {
+                        toastr["danger"](val[1]);
+                    }
+                }
+            })
+        }
+
+
+        function loadOrder(id) {
+            //alert("nice");
+            //console.log(id);
+            $.ajax({
+                method: "POST",
+                url: "/vieworder",
+                data: {
+                    get_data: 1,
+                    id: id
+                },
+                success: function(msg) {
+                    //console.log(msg);
+                    $("#details").html(msg);
+                    $("#orderdetail").modal("show");
+                }
+            })
+
+        }
+    </script>
+
+    <?php
+    include _VIEW_PATH . $lib->lang . '/dashboard_footer.phtml';
+    include _VIEW_PATH . 'dashboard_include_files.phtml';
+    ?>
+
+
+
+
+
+
+    <!-- <div class="card">
+        <div class="card-body">
+            <div class="clearfix">
+                <div class="float-left">
+                    <h4><b>ADMIN</b></h4>
+                </div>
+                <div class="float-right">
+                    <h4 class="m-0 d-print-none">Invoice</h4>
+                </div>
+            </div>
+
+
+            <div class="row mt-4">
+                <div class="col-6">
+                    <h6 class="font-weight-bold">TO:</h6>
+
+                    <address class="line-h-24">
+                        <b>Stella Worgan</b><br>
+                        3443 Ridge Road<br>
+                        Hutchinson, KS 67501<br>
+                        <abbr title="Phone">P:</abbr> 620-802-9649
+                    </address>
+                </div>
+                <div class="col-6">
+                    <div class="mt-3 float-right">
+                        <p class="mb-2"><strong>Order Date: </strong> Jan 17, 2016</p>
+                        <p class="mb-2"><strong>Order Status: </strong> <span class="badge badge-soft-success">Paid</span></p>
+                        <p class="m-b-10"><strong>Order ID: </strong> #123456</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table mt-4">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Item</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Cost</th>
+                                    <th class="text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        <b>HP 21.5 inch Full HD LED Backlit IPS Panel Monitor (22es)</b>
+                                        <br />
+                                        Brand Model VGN-TXN27N/B
+                                        11.1" Notebook PC
+                                    </td>
+                                    <td>1</td>
+                                    <td>$1799</td>
+                                    <td class="text-right">$1799</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>
+                                        <b>Lenovo Ideapad L340 Core i5 9th Gen</b> <br />
+                                        Two Year Extended Warranty -
+                                        Parts and Labor
+                                    </td>
+                                    <td>3</td>
+                                    <td>$499</td>
+                                    <td class="text-right">$1497</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>
+                                        <b>LG 260 L Frost Free Double Door 4 Star</b> <br />
+                                        Shiny Steel Refrigerator, GL-I292RPZL
+                                    </td>
+                                    <td>2</td>
+                                    <td>$412</td>
+                                    <td class="text-right">$824</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="clearfix pt-5">
+                        <h6 class="text-muted">Notes:</h6>
+
+                        <small>
+                            All accounts are to be paid within 7 days from receipt of
+                            invoice. To be paid by cheque or credit card or direct payment
+                            online. If account is not paid within 7 days the credits details
+                            supplied as confirmation of work undertaken will be charged the
+                            agreed quoted fee noted above.
+                        </small>
+                    </div>
+
+                </div>
+                <div class="col-6">
+                    <div class="float-right">
+                        <p><b>Sub-total:</b> $4120.00</p>
+                        <p><b>VAT (12.5):</b> $515</p>
+                        <h3>$4635.00 USD</h3>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+
+            <div class="d-print-none my-4">
+                <div class="text-right">
+                    <a href="javascript:window.print()" class="btn btn-primary waves-effect waves-light"><i class="fa fa-print m-r-5"></i> Print</a>
+                    <a href="#" class="btn btn-info waves-effect waves-light">Submit</a>
+                </div>
+            </div>
+        </div>
+    </div> -->

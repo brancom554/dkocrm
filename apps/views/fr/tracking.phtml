@@ -1,0 +1,55 @@
+<?php
+
+if ($iniObj->debugViews)
+    echo __FILE__;
+$title = "Suivie de commande || TEOMD";
+include _VIEW_PATH . "/customer_common_header.phtml";
+?>
+<?php
+
+include _VIEW_PATH . "/customer_common_top_bar.phtml";
+?>
+
+<?php
+
+include _VIEW_PATH . $lib->lang . "/customer_menu.phtml";
+?>
+
+<section class="page-title-area">
+    <div class="container">
+        <div class="page-title-content">
+            <h1>Suivie de Commande</h1>
+            <!-- <ul>
+                <li><a href="index.html">Home</a></li>
+                <li>Order Tracking</li>
+            </ul> -->
+        </div>
+    </div>
+</section>
+
+
+<section class="order-tracking-area ptb-70">
+    <div class="container">
+        <div class="order-tracking-content">
+            <form id="traking-form" action="/ordertracked" method="POST">
+                <div class="form-group">
+                    <label>Code Commande</label>
+                    <input type="text" id="traking-email" name="track_order" class="form-control" placeholder="Entrer le code de votre commande" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="trakin-order" name="track_email" class="form-control" required value="<?= ($_SESSION['customer']['authValidated'] == 1) ? $_SESSION['customer']['email'] : " " ?>" placeholder="Entrer votre email">
+                </div>
+                <button type="submit" class="default-btn">SUIVRE</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+<?php
+
+include _VIEW_PATH . $lib->lang . "/customer_common_footer.phtml";
+include _VIEW_PATH . "/customer_common_include_files.phtml";
+?>
+

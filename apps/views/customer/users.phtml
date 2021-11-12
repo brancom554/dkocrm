@@ -1,0 +1,175 @@
+<?php
+// if($iniObj->debugViews) echo __FILE__ ;
+// $carouselActive = true;
+// $title = "Articles neufs et occasions - Professionnel - Dépôt vente - Electroménager - Décoration - Informatique - Jeux vidéo - Son - Image - Téléphonie - Bricolage - Jardinage - Animalerie";
+include _VIEW_PATH . "/common_header.phtml"; ?>
+
+<?php
+include _VIEW_PATH . "/customer/profile_left_menu.phtml";
+include _VIEW_PATH . "common_top_bar.phtml";
+// include _VIEW_PATH.$lib->lang."/top_menu.phtml";
+?>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><?= $title ?> <span><a type="button" href="/customer/newprospector" class="btn btn-primary"><?= $lang->trl('Add Prospector') ?></a></span></h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/customer/dashboard"><?= $lang->trl('Home') ?></a></li>
+                        <li class="breadcrumb-item active"><?= $title ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <!-- <h3 class="card-title">Title</h3> -->
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th><?= $lang->trl('Last name') ?></th>
+                            <th><?= $lang->trl('First name') ?></th>
+                            <th><?= $lang->trl('Email') ?></th>
+                            <th><?= $lang->trl('Manager') ?></th>
+                            <th><?= $lang->Trl('Action') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($users as $key => $user) : ?>
+                            <tr>
+                                <td><?= ucfirst($user->lastname) ?></td>
+                                <td><?= ucfirst($user->firstname) ?></td>
+                                <td><?= $user->email ?></td>
+                                <td><?= ucfirst($user->role) ?></td>
+                                <td><a class="btn btn-default btn-xs" title="<?= $lang->trl('View Stats') ?>" data-id="<?= $user->user_id ?>" onclick="viewProsp($(this).attr('data-id'))"><i class="fas fa-eye"></i></a>
+                                    <?php if ($user->active == 0) { ?>
+                                        <a class="btn btn-danger btn-xs" data-id="<?= $user->user_id ?>" title="<?= $lang->trl('Activate') ?>" onclick="enableUser($(this).attr('data-id'))">
+                                            <i class="fas fa-times-circle">
+                                            </i>
+                                        </a>
+                                    <?php } elseif ($user->active == 1) { ?>
+                                        <a class="btn btn-success btn-xs" data-id="<?= $user->user_id ?>" title="<?= $lang->trl('Desactivate') ?>" onclick="desableUser($(this).attr('data-id'))">
+                                            <i class="fas fa-check">
+                                            </i>
+                                        </a>
+                                    <?php } ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+<div class="modal fade" id="modal-user">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="user-stat">
+
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<script>
+    function viewProsp(id) {
+        // console.log(id)
+        $.ajax({
+            method: "POST",
+            url: "/customer/prospdetail",
+            data: {
+                id: id
+            },
+            success: function(data) {
+                //console.log(data);
+                $("#user-stat").html(data);
+                $("#modal-user").modal('show');
+            }
+        })
+    }
+
+    function enableUser(id) {
+        // console.log(id);
+        $.ajax({
+            method: "POST",
+            url: "/customer/enableuser",
+            data: {
+                id: id
+            },
+            success: function(data) {
+                console.log(data);
+                var val = data.split("||");
+                if (val[0] == "true") {
+                    location.reload();
+                } else if (val[0] == "false") {
+                    taostr.error(val[1]);
+                }
+            }
+        })
+    }
+
+    function desableUser(id) {
+        //console.log(id);
+        $.ajax({
+            method: "POST",
+            url: "/customer/desableuser",
+            data: {
+                id: id
+            },
+            success: function(data) {
+                console.log(data);
+                var val = data.split("||");
+                if (val[0] == "true") {
+                    location.reload();
+                } else if (val[0] == "false") {
+                    taostr.error(val[1]);
+                }
+            }
+        })
+    }
+</script>
+
+<?php include _VIEW_PATH . $lib->lang . "/common_footer.phtml"; ?>
+<?php include _VIEW_PATH . "/common_include_files.phtml"; ?>

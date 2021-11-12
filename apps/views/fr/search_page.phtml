@@ -1,0 +1,552 @@
+<?php
+if ($iniObj->debugViews)
+    echo __FILE__;
+$title = "Recherche";
+include _VIEW_PATH . "/customer_common_header.phtml";
+include _VIEW_PATH . "/customer_common_top_bar.phtml";
+include _VIEW_PATH . $lib->lang . "/customer_menu.phtml";
+?>
+
+
+<section class="products-area ptb-70">
+    <div class="container">
+        <div class="theme-grid-sorting">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 result-count">
+                    <p>0 Items found</p>
+                </div>
+                <div class="col-lg-6 col-md-6 ordering">
+                    <!--<div class="select-box">
+                        <label>Sort By:</label>
+                        <select>
+                            <option>Default</option>
+                            <option>Popularity</option>
+                            <option>Latest</option>
+                            <option>Price: low to high</option>
+                            <option>Price: high to low</option>
+                        </select>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+        <div>
+            <section class="error-area ptb-70">
+                <div class="container">
+                    <div class="error-content">
+                        <img src="<?= $iniObj->UIPath ?>/img/search_icon.png" alt="image" style="width: 100px">
+                        <h3>No items found for your search</h3>
+                        <p>.</p>
+                        <a href="javascript:void(0)" class="default-btn"><i class="flaticon-left-chevron"></i> Back to Homepage</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!--<div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="single-products-box">
+                    <div class="image">
+                        <a href="products-details.html" class="d-block"><img src="<?= $iniObj->UIPath ?>/img/products/products-img1.jpg" alt="image"></a>
+                        <div class="new">New</div>
+                        <ul class="buttons-list">
+                            <li>
+                                <a href="wishlist.html">
+                                    <i class='bx bx-heart'></i>
+                                    <span class="tooltip-label">Add to Wishlist</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="cart.html">
+                                    <i class='bx bxs-cart-add'></i>
+                                    <span class="tooltip-label">Add to Cart</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#productsQuickView">
+                                    <i class='bx bx-search-alt'></i>
+                                    <span class="tooltip-label">Quick View</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                        </div>
+                        <h3><a href="products-details.html">Infrared Thermometer Gun</a></h3>
+                        <div class="price">
+                            <span class="new-price">$69.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="single-products-box">
+                    <div class="image">
+                        <a href="products-details.html" class="d-block"><img src="<?= $iniObj->UIPath ?>/img/products/products-img2.jpg" alt="image"></a>
+                        <ul class="buttons-list">
+                            <li>
+                                <a href="wishlist.html">
+                                    <i class='bx bx-heart'></i>
+                                    <span class="tooltip-label">Add to Wishlist</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="cart.html">
+                                    <i class='bx bxs-cart-add'></i>
+                                    <span class="tooltip-label">Add to Cart</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#productsQuickView">
+                                    <i class='bx bx-search-alt'></i>
+                                    <span class="tooltip-label">Quick View</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star-half'></i>
+                        </div>
+                        <h3><a href="products-details.html">Hand Sanitizer Gel</a></h3>
+                        <div class="price">
+                            <span class="new-price">$49.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="single-products-box">
+                    <div class="image">
+                        <a href="products-details.html" class="d-block"><img src="<?= $iniObj->UIPath ?>/img/products/products-img3.jpg" alt="image"></a>
+                        <div class="sale">Sale!</div>
+                        <ul class="buttons-list">
+                            <li>
+                                <a href="wishlist.html">
+                                    <i class='bx bx-heart'></i>
+                                    <span class="tooltip-label">Add to Wishlist</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="cart.html">
+                                    <i class='bx bxs-cart-add'></i>
+                                    <span class="tooltip-label">Add to Cart</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#productsQuickView">
+                                    <i class='bx bx-search-alt'></i>
+                                    <span class="tooltip-label">Quick View</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                        <h3><a href="products-details.html">Coronavirus Vaccine</a></h3>
+                        <div class="price">
+                            <span class="new-price">$150.00</span>
+                            <span class="old-price">$200.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="single-products-box">
+                    <div class="image">
+                        <a href="products-details.html" class="d-block"><img src="<?= $iniObj->UIPath ?>/img/products/products-img4.jpg" alt="image"></a>
+                        <div class="buttons-list">
+                            <ul>
+                                <li>
+                                    <a href="wishlist.html">
+                                        <i class='bx bx-heart'></i>
+                                        <span class="tooltip-label">Add to Wishlist</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="cart.html">
+                                        <i class='bx bxs-cart-add'></i>
+                                        <span class="tooltip-label">Add to Cart</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" data-toggle="modal" data-target="#productsQuickView">
+                                        <i class='bx bx-search-alt'></i>
+                                        <span class="tooltip-label">Quick View</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star-half'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                        <h3><a href="products-details.html">Protective Gloves</a></h3>
+                        <div class="price">
+                            <span class="new-price">$25.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="single-products-box">
+                    <div class="image">
+                        <a href="products-details.html" class="d-block"><img src="<?= $iniObj->UIPath ?>/img/products/products-img5.jpg" alt="image"></a>
+                        <div class="new">New</div>
+                        <ul class="buttons-list">
+                            <li>
+                                <a href="#">
+                                    <i class='bx bx-heart'></i>
+                                    <span class="tooltip-label">Add to Wishlist</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class='bx bxs-cart-add'></i>
+                                    <span class="tooltip-label">Add to Cart</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#productsQuickView">
+                                    <i class='bx bx-search-alt'></i>
+                                    <span class="tooltip-label">Quick View</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                        </div>
+                        <h3><a href="products-details.html">Microscope</a></h3>
+                        <div class="price">
+                            <span class="new-price">$529.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="single-products-box">
+                    <div class="image">
+                        <a href="products-details.html" class="d-block"><img src="<?= $iniObj->UIPath ?>/img/products/products-img6.jpg" alt="image"></a>
+                        <ul class="buttons-list">
+                            <li>
+                                <a href="#">
+                                    <i class='bx bx-heart'></i>
+                                    <span class="tooltip-label">Add to Wishlist</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class='bx bxs-cart-add'></i>
+                                    <span class="tooltip-label">Add to Cart</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#productsQuickView">
+                                    <i class='bx bx-search-alt'></i>
+                                    <span class="tooltip-label">Quick View</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                        </div>
+                        <h3><a href="products-details.html">Blood Pressure Monitor</a></h3>
+                        <div class="price">
+                            <span class="new-price">$89.00</span>
+                            <span class="old-price">$100.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="single-products-box">
+                    <div class="image">
+                        <a href="products-details.html" class="d-block"><img src="<?= $iniObj->UIPath ?>/img/products/products-img7.jpg" alt="image"></a>
+                        <div class="sale">Sale!</div>
+                        <ul class="buttons-list">
+                            <li>
+                                <a href="#">
+                                    <i class='bx bx-heart'></i>
+                                    <span class="tooltip-label">Add to Wishlist</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class='bx bxs-cart-add'></i>
+                                    <span class="tooltip-label">Add to Cart</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#productsQuickView">
+                                    <i class='bx bx-search-alt'></i>
+                                    <span class="tooltip-label">Quick View</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                        <h3><a href="products-details.html">Infrared Thermometer</a></h3>
+                        <div class="price">
+                            <span class="new-price">$50.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="single-products-box">
+                    <div class="image">
+                        <a href="products-details.html" class="d-block"><img src="<?= $iniObj->UIPath ?>/img/products/products-img8.jpg" alt="image"></a>
+                        <ul class="buttons-list">
+                            <li>
+                                <a href="#">
+                                    <i class='bx bx-heart'></i>
+                                    <span class="tooltip-label">Add to Wishlist</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class='bx bxs-cart-add'></i>
+                                    <span class="tooltip-label">Add to Cart</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#productsQuickView">
+                                    <i class='bx bx-search-alt'></i>
+                                    <span class="tooltip-label">Quick View</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                        </div>
+                        <h3><a href="products-details.html">Stethoscope</a></h3>
+                        <div class="price">
+                            <span class="new-price">$25.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="single-products-box">
+                    <div class="image">
+                        <a href="products-details.html" class="d-block"><img src="<?= $iniObj->UIPath ?>/img/products/products-img9.jpg" alt="image"></a>
+                        <ul class="buttons-list">
+                            <li>
+                                <a href="#">
+                                    <i class='bx bx-heart'></i>
+                                    <span class="tooltip-label">Add to Wishlist</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class='bx bxs-cart-add'></i>
+                                    <span class="tooltip-label">Add to Cart</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#productsQuickView">
+                                    <i class='bx bx-search-alt'></i>
+                                    <span class="tooltip-label">Quick View</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                        <h3><a href="products-details.html">Vail Vaccine</a></h3>
+                        <div class="price">
+                            <span class="new-price">$99.00</span>
+                            <span class="old-price">$110.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="single-products-box">
+                    <div class="image">
+                        <a href="products-details.html" class="d-block"><img src="<?= $iniObj->UIPath ?>/img/products/products-img10.jpg" alt="image"></a>
+                        <ul class="buttons-list">
+                            <li>
+                                <a href="#">
+                                    <i class='bx bx-heart'></i>
+                                    <span class="tooltip-label">Add to Wishlist</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class='bx bxs-cart-add'></i>
+                                    <span class="tooltip-label">Add to Cart</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#productsQuickView">
+                                    <i class='bx bx-search-alt'></i>
+                                    <span class="tooltip-label">Quick View</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                        </div>
+                        <h3><a href="products-details.html">Hand Sanitizer Gel</a></h3>
+                        <div class="price">
+                            <span class="new-price">$29.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="single-products-box">
+                    <div class="image">
+                        <a href="products-details.html" class="d-block"><img src="<?= $iniObj->UIPath ?>/img/products/products-img11.jpg" alt="image"></a>
+                        <div class="new">New</div>
+                        <ul class="buttons-list">
+                            <li>
+                                <a href="#">
+                                    <i class='bx bx-heart'></i>
+                                    <span class="tooltip-label">Add to Wishlist</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class='bx bxs-cart-add'></i>
+                                    <span class="tooltip-label">Add to Cart</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#productsQuickView">
+                                    <i class='bx bx-search-alt'></i>
+                                    <span class="tooltip-label">Quick View</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                        </div>
+                        <h3><a href="products-details.html">Inhalers</a></h3>
+                        <div class="price">
+                            <span class="new-price">$55.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="single-products-box">
+                    <div class="image">
+                        <a href="products-details.html" class="d-block"><img src="<?= $iniObj->UIPath ?>/img/products/products-img12.jpg" alt="image"></a>
+                        <div class="sale">Sale!</div>
+                        <ul class="buttons-list">
+                            <li>
+                                <a href="#">
+                                    <i class='bx bx-heart'></i>
+                                    <span class="tooltip-label">Add to Wishlist</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class='bx bxs-cart-add'></i>
+                                    <span class="tooltip-label">Add to Cart</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#productsQuickView">
+                                    <i class='bx bx-search-alt'></i>
+                                    <span class="tooltip-label">Quick View</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="content">
+                        <div class="rating">
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bxs-star'></i>
+                            <i class='bx bx-star'></i>
+                        </div>
+                        <h3><a href="products-details.html">Blood Glucose Meter</a></h3>
+                        <div class="price">
+                            <span class="new-price">$35.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="pagination-area text-center">
+                    <span class="page-numbers current" aria-current="page">1</span>
+                    <a href="products-grid.html" class="page-numbers">2</a>
+                    <a href="products-grid.html" class="page-numbers">3</a>
+                    <a href="products-grid.html" class="page-numbers">4</a>
+                    <a href="products-grid.html" class="next page-numbers"><i class='bx bx-chevron-right'></i></a>
+                </div>
+            </div>
+        </div>-->
+    </div>
+</section>
+
+<?php
+include _VIEW_PATH . $lib->lang . "/customer_common_footer.phtml";
+include _VIEW_PATH . "/customer_common_include_files.phtml";
+?>

@@ -1,0 +1,106 @@
+<?php
+if ($iniObj->debugViews)
+    echo __FILE__;
+$title = "Produits || Tableau de bord || ".$iniObj->serviceName;
+include _VIEW_PATH . '/dashboard_head.phtml';
+include _VIEW_PATH . $lib->lang . '/dashboard_header.phtml';
+include _VIEW_PATH . $lib->lang . '/dashboard_sidebar.phtml';
+?>
+
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0 font-size-18">Articles
+                            <a class="btn btn-primary" href="/customer/newproduct"> Ajouter un Article </a>
+                        </h4>
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <h4 class="card-title">Listes des Articles</h4>
+                            <p class="card-subtitle mb-4">
+                            </p>
+
+                            <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Nom</th>
+                                        <th>Stock disponible</th>
+                                        <th>Catégorie</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+
+                                <tbody>
+                                    <?php foreach ($products['data'] as $key => $product) : ?>
+                                        <tr class="item tr<?= $product->item_id ?>" id="<?= $product->item_id ?>">
+                                            <td><?= $product->reference ?></td>
+                                            <td><?= $product->name ?></td>
+                                            <td><?= (intval($product->stock) - intval($product->stock_av) == 0 ) ? '<span class="badge badge-soft-danger p-2">Rupture de stock</span>' : (intval($product->stock) - intval($product->stock_av)) ?></td>
+                                            <td><?= ($product->category) ? $product->category : "Pas de Catégorie" ?></td>
+                                            <td>
+                                                <a title="Modifier" href="/editeitem_<?= $product->item_id ?>" class=""><span class="badge badge-light badge-pill"><i class="fa fa-edit"></i></span></a>
+                                                <a title="Spprimer" data-id="<?= $product->item_id ?>" id="delete" class="" onclick="deletItem(this.getAttribute('data-id'))"><span class="badge badge-light badge-pill"><i class="fa fa-trash"></i></span></a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+
+                        </div> <!-- end card body-->
+                    </div> <!-- end card -->
+                </div><!-- end col-->
+            </div>
+            <!-- end row-->
+
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+
+
+
+    <?php
+    include _VIEW_PATH . $lib->lang . '/dashboard_footer.phtml';
+    include _VIEW_PATH . 'dashboard_include_files.phtml';
+    ?>
+
+    <script>
+        function deletItem(id) {
+            //console.log(id);
+            $.ajax({
+                method: "POST",
+                url: "/deleteItem",
+                data: {
+                    id: id
+                },
+                success: function(msg) {
+                    console.log(msg);
+                    var val = msg.split("||");
+                    if (val[0] == "true") {
+                        toastr["success"](val[1]);
+                        $('.tr' + id).fadeOut("slow");
+                    } else if (val[0] == "false") {
+                        toastr["danger"](val[1]);
+                    }
+                }
+            });
+        }
+    </script>

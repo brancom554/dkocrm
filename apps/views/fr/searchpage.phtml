@@ -1,0 +1,91 @@
+<?php
+
+if ($iniObj->debugViews)
+    echo __FILE__;
+$title = $key." || Recherche || ".$iniObj->serviceName;
+include _VIEW_PATH . "/customer_common_header.phtml";
+?>
+<?php
+
+include _VIEW_PATH . "/customer_common_top_bar.phtml";
+?>
+
+<?php
+
+include _VIEW_PATH . $lib->lang . "/customer_menu.phtml";
+?>
+<?php if ($items['rows'] == 0) : ?>
+    <section class="error-area ptb-70">
+        <div class="container">
+            <div class="error-content">
+                <h3>Aucun Article trouvé</h3>
+                <a href="/shop" class="default-btn"><i class="flaticon-left-chevron"></i> Aller à la boutique </a>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>
+
+<section class="products-area ptb-70">
+    <div class="container">
+        <div class="row">
+            <?php foreach ($items['data'] as $k => $item) : ?>
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="single-products-box">
+                        <div class="image">
+                            <a href="/product_<?= $item->item_id ?>" class="d-block">
+                                <?php
+                                $itemImg = $sqlData->getItemFeaImg($item->item_id);
+                                if ($itemImg['data'][0]->path) { ?>
+                                    <img src="<?= $iniObj->imgPath . $itemImg['data'][0]->path ?>" alt="image">
+                                <?php } else { ?>
+                                    <img src="<?= $iniObj->UIPath ?>/img/products/products-img1.jpg" alt="image"></a>
+                        <?php  } ?>
+                        </a>
+                        <!-- <div class="sale">NEW</div> -->
+                        <ul class="buttons-list">
+                            <li>
+                                <a href="javascript:void(0)" id="<?= $item->item_id ?>" class="addcart">
+                                    <i class='bx bxs-cart-add'></i>
+                                    <span class="tooltip-label">Ajouter au panier</span>
+                                    <input type="hidden" value="1" id="quantity">
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" data-id="<?= $item->item_id ?>" class="quickview" onclick="loadItemdata(this.getAttribute('data-id'))" data-toggle="modal" data-target="">
+                                    <i class='bx bx-search-alt'></i>
+                                    <span class="tooltip-label">Voir</span>
+                                </a>
+                            </li>
+                        </ul>
+                        </div>
+                        <div class="content">
+                            <div class="rating">
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bxs-star'></i>
+                                <i class='bx bx-star'></i>
+                            </div>
+                            <h3><a href="products-details.html"><?= $item->name ?></a></h3>
+                            <div class="price">
+                                <span class="new-price">€<?= $item->price_max ?></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="pagination-area text-center">
+                    <?= $pagination->paginate($pages_requested, $currentPage); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<?php
+
+include _VIEW_PATH . $lib->lang . "/customer_common_footer.phtml";
+include _VIEW_PATH . "/customer_common_include_files.phtml";
+?>

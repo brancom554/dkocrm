@@ -1,0 +1,151 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1><?= $lang->trl('Companies') ?> <span><a type="button" href="/customer/company_new" class="btn btn-primary"><?= $lang->trl('Add company') ?></a></span></h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/customer/dashboard"><?= $lang->trl('Home') ?></a></li>
+            <li class="breadcrumb-item active"><?= $lang->trl('Companies') ?></li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><?= $lang->trl('Companies List') ?></h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th><?= $lang->trl('Company name') ?></th>
+                    <th><?= $lang->trl('Field of activity') ?></th>
+                    <th><?= $lang->trl('Type') ?></th>
+                    <th><?= $lang->trl('Action') ?></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  foreach ($companies as $company) :
+                  ?>
+                    <tr>
+                      <td><?= $company->company_name ?></td>
+                      <td><?= $company->activity_area ?></td>
+                      <td><?= ($company->company_type == 'private')? $lang->trl('Private') : $lang->trl('Public') ?></td>
+                      <td><a href="/editcompany_<?= $company->company_id  ?>" class="btn btn-success btn-xs" title="<?= $lang->trl('Edit') ?>" data-id="<?= $company->company_id ?>" onclick=""><i class="fas fa-edit"></i></a> <a class="btn btn-default btn-xs" href="javascript:void(0)" data-id="<?= $company->company_id ?>" onclick="loadcommentmodal($(this).attr('data-id'))" title="<?= $lang->trl('Add Comment') ?>"><i class="fas fa-comment"></i></a><a href="/company_<?= $company->company_id  ?>" class="btn btn-primary btn-xs" title="<?= $lang->trl('View') ?>" data-id="<?= $company->company_id ?>" onclick=""><i class="fas fa-eye"></i></a></td>
+                    </tr>
+                  <?php endforeach; ?>
+                </tbody>
+
+              </table>  
+            </div>
+            <!-- /.card-body -->
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+
+<div class="modal fade" id="addcomment">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><?= $lang->trl('Add Comment') ?></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="adcommentform">
+          <input type="hidden" id="companyid" name="companyid">
+          <div class="form-group">
+            <label></label>
+            <textarea class="form-control" rows="3" id="textcomment" name="textcomment" placeholder="<?= $lang->trl('Your comment ...') ?>"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?= $lang->trl('Close') ?></button>
+        <button type="button" onclick="setcomment()" class="btn btn-primary"><?= $lang->trl('Submit') ?></button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+
+<script>
+  function laodData(id) {
+    //console.log(id);
+    $.ajax({
+      method: "POST",
+      url: "/customer/loadcompany",
+      data: {
+        id: id
+      },
+      success: function(data) {
+        console.log(data);
+      }
+    })
+  }
+
+  function loadcommentmodal(id) {
+    //alert(id);
+    $("#companyid").val(id);
+    $("#addcomment").modal("show");
+  }
+
+  function setcomment() {
+    var company_id = encodeURIComponent($("#companyid").val());
+    var comment = encodeURIComponent($("#textcomment").val());
+    //console.log(comment);
+    $.ajax({
+      method: "POST",
+      url: "/customer/newcomment",
+      data: {
+        company_id: company_id,
+        comment: comment
+      },
+      success: function(msg) {
+        //console.log(msg);
+        var val = msg.split("||");
+        if (val[0] == "true") {
+          $("#adcommentform")[0].reset();
+          Toast.fire({
+            icon: 'success',
+            title: val[1]
+          });
+          $("#addcomment").modal("hide");
+        } else if (val[0] == "false") {
+          Toast.fire({
+            icon: 'error',
+            title: val[1]
+          });
+        }
+      }
+    })
+  }
+</script>

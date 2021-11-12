@@ -1,0 +1,282 @@
+<?php
+// if($iniObj->debugViews) echo __FILE__ ;
+// $carouselActive = true;
+// $title = "Articles neufs et occasions - Professionnel - Dépôt vente - Electroménager - Décoration - Informatique - Jeux vidéo - Son - Image - Téléphonie - Bricolage - Jardinage - Animalerie";
+include _VIEW_PATH . "/common_header.phtml"; ?>
+
+<?php
+include _VIEW_PATH . "/customer/profile_left_menu.phtml";
+include _VIEW_PATH . "common_top_bar.phtml";
+// include _VIEW_PATH.$lib->lang."/top_menu.phtml";
+// $lib->debug($company_data);die;
+?>
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><?= $mission->type ?></h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#"><?= $lang->trl('Home') ?></a></li>
+                        <li class="breadcrumb-item active"><?= $lang->trl('Mission Detail') ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"><?= $lang->trl('Mission Detail') ?></h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+                        <div class="row">
+                            <div class="col-12 col-sm-4">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted"><?= $lang->trl('Company') ?></span>
+                                        <span class="info-box-number text-center text-muted mb-0"><?= $mission->company ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted"><?= $lang->trl('Contact') ?></span>
+                                        <span class="info-box-number text-center text-muted mb-0"><?= ucfirst($mission->contact_firstname) . ' ' . strtoupper($mission->contact_lastname) ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted"><?= $lang->trl('Date') ?></span>
+                                        <span class="info-box-number text-center text-muted mb-0"><?= $sqlData->refomat_date($mission->mission_date, $format = 'full') ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- <div class="col-12">
+                                <h4><?= $lang->trl('Recent Comments') ?></h4>
+                                <div style=" height: 400px; overflow: auto;" id="comment" data-id="<?= $mission->company_id ?>">
+                                </div>
+                                <br>
+                                <form id="addnewcomment">
+                                    <div class="form-group">
+                                        <textarea name="newcomment" id="newcomment" class="form-control" rows="3" placeholder="<?= $lang->trl('comment') ?> ..."></textarea>
+                                    </div>
+                                    <button type="button" data-id="<?= $mission->company_id ?>" onclick="addcomment($(this).attr('data-id'))" class="btn btn-default float-right"><?= $lang->trl('Add comment') ?></button>
+                                </form>
+
+                            </div> -->
+                            <div class="card-body">
+                                <input type="hidden" value="<?= $company_id ?>" id="company" />
+                                <div class="tab-content">
+
+
+
+                                    <?php if ($mission->type == 'Appel prospect') { ?>
+                                        <div class="active tab-pane" id="reports">
+                                            <div class="col-6">
+                                                <h4><?= $lang->trl('Recent Reports') ?></h4>
+                                                <div style=" height: 200px;  width: 780.8px; overflow: auto;" id="report" data-id="<?= $mission->mission_id ?>">
+
+                                                </div>
+                                                <br>
+                                                <form id="addnewreport" style="width: 780.8px;">
+                                                    <div class="form-group">
+                                                        <textarea name="newreport" id="newreport" class="form-control" rows="3" placeholder="<?= $lang->trl('report') ?> ..."></textarea>
+                                                    </div>
+                                                    <button type="button" data-id="<?= $mission->mission_id ?>>" onclick="addreport(<?= $mission->mission_id ?>)" class="btn btn-default float-right" style="text-align: left;"><?= $lang->trl('Add report') ?></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    <?php } else if ($mission->type == 'Rendez-vous téléphonique') { ?>
+                                        <div class="active tab-pane" id="reports">
+                                            <div class="col-6">
+                                                <h4><?= $lang->trl('Recent Reports') ?></h4>
+                                                <div style=" height: 200px;  width: 780.8px; overflow: auto;" id="report" data-id="<?= $mission->mission_id ?>">
+
+                                                </div>
+                                                <br>
+                                                <form id="addnewreport" style="width: 780.8px;">
+                                                    <div class="form-group">
+                                                        <textarea name="newreport" id="newreport" class="form-control" rows="3" placeholder="<?= $lang->trl('report') ?> ..."></textarea>
+                                                    </div>
+                                                    <button type="button" data-id="<?= $mission->mission_id ?>>" onclick="addreport(<?= $mission->mission_id ?>)" class="btn btn-default float-right" style="text-align: left;"><?= $lang->trl('Add report') ?></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
+                                    <!-- /.tab-pane -->
+                                </div>
+                                <!-- /.tab-content -->
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
+                        <h3 class="text-primary"><i class="fas fa-paint-brush"></i> <?= $lang->trl('Description') ?></h3>
+                        <?php if ($mission->description == null) { ?>
+                            <form id="adddescription">
+                                <div class="form-group">
+                                    <textarea id="missiondesc" name="missiondesc" class="form-control" rows="3" placeholder="<?= $lang->trl('Add Description') ?> ..."></textarea>
+                                </div>
+                                <button type="button" data-id="<?= $mission->mission_id ?>" onclick="addmissiondesc($(this).attr('data-id'))" class="btn btn-info"><?= $lang->trl('Submit') ?></button>
+                            </form>
+                        <?php } elseif ($mission->description == true) { ?>
+                            <p class="text-muted"><?= $mission->description ?></p>
+
+                        <?php } ?>
+                        <br>
+                        <div class="text-muted">
+                            <p class="text-sm"><?= $lang->trl('Prospector') ?>
+                                <b class="d-block"><?= ucfirst($mission->user_firstname) . ' ' . strtoupper($mission->user_lastname) ?></b>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+
+
+                </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<script>
+    // function laodcomment() {
+    //     var company_id = $("#comment").attr("data-id");
+    //     $.ajax({
+    //         method: "POST",
+    //         url: "/customer/comment",
+    //         data: {
+    //             company_id: company_id
+    //         },
+    //         success: function(data) {
+    //             $("#comment").html(data);
+    //         }
+    //     })
+    // }
+
+    // window.onload = (event) => {
+    //     laodcomment();
+    //     console.log(comment);
+    // };
+
+
+    function loadreport() {
+
+
+        var mission_id = $("#report").attr("data-id");
+        //  alert(mission_id);return;
+        $.ajax({
+            method: "POST",
+            url: "/customer/report",
+            data: {
+                mission_id: mission_id,
+                company_id: $('#company').val()
+            },
+            success: function(data) {
+                //console.log(data);
+                $("#report").html(data);
+            }
+        })
+    }
+    window.onload = (event) => {
+        loadreport();
+        //  console.log(comment);
+    };
+
+
+    function addreport(mission) {
+        // alert($('#company').val());
+        var commentext = encodeURIComponent($("#newreport").val());
+        $.ajax({
+            method: "POST",
+            url: "/customer/newreport",
+            data: {
+                mission_id: mission,
+                report: commentext,
+                company_id: $('#company').val()
+            },
+            success: function(msg) {
+                var val = msg.split("||");
+                if (val[0] == "true") {
+                    $("#addnewreport")[0].reset();
+                    Toast.fire({
+                        icon: 'success',
+                        title: val[1]
+                    });
+                    loadreport();
+                } else if (val[0] == "false") {
+                    Toast.fire({
+                        icon: 'error',
+                        title: val[1]
+                    });
+                }
+            }
+        })
+    }
+
+    function addmissiondesc(mission_id) {
+        //console.log(mission_id);
+        var description = encodeURIComponent($("#missiondesc").val());
+        $.ajax({
+            method: "POST",
+            url: "/customer/missiondescription",
+            data: {
+                mission_id: mission_id,
+                description: description
+            },
+            success: function(msg) {
+                console.log(msg);
+                var val = msg.split("||");
+                if (val[0] == "true") {
+                    location.reload();
+                } else if (val[0] == "false") {
+                    Toast.fire({
+                        icon: 'error',
+                        title: val[1]
+                    });
+                    $("#adddescription")[0].reset();
+                }
+            }
+        })
+    }
+</script>
+
+
+
+<?php include _VIEW_PATH . $lib->lang . "/common_footer.phtml"; ?>
+<?php include _VIEW_PATH . "/common_include_files.phtml"; ?>

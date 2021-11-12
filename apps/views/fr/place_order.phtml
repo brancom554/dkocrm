@@ -1,0 +1,35 @@
+<?php
+
+if ($iniObj->debugViews)
+    echo __FILE__;
+$title = "Commande || TEOMD";
+include _VIEW_PATH . "/customer_common_header.phtml";
+include _VIEW_PATH . "/customer_common_top_bar.phtml";
+include _VIEW_PATH . $lib->lang . "/customer_menu.phtml";
+?>
+
+
+<section class="order-tracking-area ptb-70">
+    <div class="container">
+        <div class="order-tracking-content">
+            <form>
+                <div class="form-group">
+                    <label>Order ID</label>
+                    <input type="text" class="form-control" placeholder="Found in your order confirmation email">
+                </div>
+                <div class="form-group">
+                    <label>Billing E-mail</label>
+                    <input type="email" class="form-control" placeholder="Email you used during checkout">
+                </div>
+                <button type="submit" class="default-btn">TRACK ORDER</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+<?php
+
+include _VIEW_PATH . $lib->lang . "/customer_common_footer.phtml";
+include _VIEW_PATH . "/customer_common_include_files.phtml";
+?>

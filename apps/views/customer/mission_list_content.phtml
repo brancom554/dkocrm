@@ -1,0 +1,151 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1><?= $lang->trl('Missions') ?> <span><a type="button" href="/customer/mission_new" class="btn btn-primary"><?= $lang->trl('Create Mission') ?></a></span></h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/customer/dashboard"><?= $lang->trl('Home') ?></a></li>
+            <li class="breadcrumb-item active"><?= $lang->trl('Missions') ?></li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><?= $lang->trl('Missions List') ?></h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th><?= $lang->trl('Label') ?></th>
+                    <th><?= $lang->trl('Company') ?></th>
+                    <th><?= $lang->trl('Contact') ?></th>
+                    <th><?= $lang->trl('Date') ?></th>
+                    <th><?= $lang->trl('status') ?></th>
+                    <th><?= $lang->trl('Action') ?></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($missions as $key => $mission) : ?>
+                    <tr>
+                      <td><?= $mission->type ?></td>
+                      <td><?= $mission->company ?></td>
+                      <td><?= ucfirst($mission->contact_firstname) . ' ' . ucfirst($mission->contact_lastname) ?></td>
+                      <td> <?= $sqlData->refomat_date($mission->mission_date, $format = 'full') ?></td>
+                      <td>
+                        <?php
+                        $current = date('Y/m/d H:i:s');
+                        if ($mission->status == 1 && strtotime($mission->mission_date) < strtotime($current)) {
+                          echo '<span class="badge bg-danger">' . $lang->trl('not carried out') . ' (' . $lang->trl('expired date') . ')</span>';
+                        } else if ($mission->status == 1) {
+                          echo '<span class="badge bg-danger">' . $lang->trl('not carried out') . '</span>';
+                        } else if ($mission->status == 2) {
+                          echo '<span class="badge bg-success">' . $lang->trl('carried out') . '</span>';
+                        }
+                        ?>
+                      </td>
+                      <td><a class="btn btn-default btn-xs" title="<?= $lang->trl('Quick View') ?>" data-id="<?= $mission->mission_id ?>" onclick="loadModal($(this).attr('data-id'))"><i class="fas fa-eye"></i></a> <a class="btn btn-default btn-xs" href="/mission_<?= $mission->mission_id ?>" title="<?= $lang->trl('Open') ?>"><i class="fas fa-folder-open"></i></a>
+                        <?php if ($mission->status == 1) : ?>
+                          <a class="btn btn-default btn-xs" title="<?= $lang->trl('Act mission') ?>" data-id="<?= $mission->mission_id ?>" onclick="act($(this).attr('data-id'))"><i class="fas fa-check"></i></a>
+                        <?php endif; ?>
+                      </td>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                </tbody>
+                <!-- <tfoot>
+                  <tr>
+                    <th><?= $lang->trl('Label') ?></th>
+                    <th><?= $lang->trl('Company') ?></th>
+                    <th><?= $lang->trl('Contact') ?></th>
+                    <th><?= $lang->trl('Date') ?></th>
+                    <th><?= $lang->trl('status') ?></th>
+                  </tr>
+                </tfoot> -->
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Page specific script -->
+
+<div class="modal fade" id="missiondetail">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><?= $lang->trl('Mission') ?></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="details">
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?= $lang->trl('Close') ?></button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<script>
+  function loadModal(id) {
+    $.ajax({
+      method: "POST",
+      url: "/customer/loadmission",
+      data: {
+        id: id
+      },
+      success: function(msg) {
+        //console.log(msg);
+        $("#details").html(msg);
+        $("#missiondetail").modal("show");
+      }
+    })
+  }
+
+  function act(mission_id) {
+    // console.log(mission_id)
+    $.ajax({
+      method: "POST",
+      url: "/customer/mission_done/",
+      data: {
+        mission_id: mission_id
+      },
+      success: function(msg) {
+        console.log(msg)
+        var val = msg.split("||");
+        if (val[0] == "true") {
+          toastr["success"](val[1]);
+          location.reload();
+        }else if(val[0] == "false"){
+          toastr["error"](val[1]);
+        }
+      }
+    })
+  }
+</script>

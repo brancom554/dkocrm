@@ -1,0 +1,158 @@
+<?php
+if ($iniObj->debugViews)
+    echo __FILE__;
+$title = "Livraisons || Tableau de bord || ".$iniObj->serviceName;
+include _VIEW_PATH . '/dashboard_head.phtml';
+include _VIEW_PATH . $lib->lang . '/dashboard_header.phtml';
+include _VIEW_PATH . $lib->lang . '/dashboard_sidebar.phtml';
+?>
+
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0 font-size-18">Livraison</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title"><?= ($_SESSION['customer']['role_id'] == 1) ? 'Toutes les livraisons' : 'Mes livraisons' ?></h4>
+                            <p class="card-subtitle mb-4">
+                            </p>
+
+                            <?php if ($_SESSION['customer']['role_id'] == 1) : ?>
+                                <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>Code Commande</th>
+                                            <th>Livrer par</th>
+                                            <th>Date de livraison</th>
+                                            <th>Client</th>
+                                            <th>Adresse de Livraison</th>
+                                            <th>Statut</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <?php foreach ($deleveries['data'] as $key => $delivery) : ?>
+                                            <tr class="livraison" id="">
+                                                <td><?= $delivery->code ?></td>
+                                                <td><?= $delivery->supplier ?></td>
+                                                <td><?= $delivery->deliverydate ?></td>
+                                                <td><?= ucfirst($delivery->lastname) . ' ' . ucfirst($delivery->firstname) ?></td>
+                                                <td><?= $delivery->streetAdd . ' ' . $delivery->cityAdd . ' ' . $delivery->countryAdd ?></td>
+                                                <td>
+                                                    <div class="btn-group mb-2">
+                                                        <?php
+                                                        if ($delivery->deliverystat == 2) {
+                                                            echo '<button type="button" class="btn btn-warning btn-sm dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">En cours <i class="mdi mdi-chevron-down"></i></button>';
+                                                        }else if($delivery->deliverystat == 1){
+                                                            echo '<button type="button" class="btn btn-success btn-sm dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Terminée <i class="mdi mdi-chevron-down"></i></button>';
+                                                        }else if($delivery->deliverystat == 0){
+                                                            echo '<button type="button" class="btn btn-danger btn-sm dropdown-toggle waves-effect waves-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Rejetée <i class="mdi mdi-chevron-down"></i></button>';
+                                                        }
+                                                        ?>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item switchStat" data-delivery="<?= $delivery->shipping_id ?>" data-id="2" href="javascript:void(0)" onclick="switchDelStat(this.getAttribute('data-id'), this.getAttribute('data-delivery'))">En cour</a>
+                                                            <a class="dropdown-item switchStat" data-delivery="<?= $delivery->shipping_id ?>" data-id="1" href="javascript:void(0)" onclick="switchDelStat(this.getAttribute('data-id'), this.getAttribute('data-delivery'))">Terminée </a>
+                                                            <a class="dropdown-item switchStat" data-delivery="<?= $delivery->shipping_id ?>" data-id="0" href="javascript:void(0)" onclick="switchDelStat(this.getAttribute('data-id'), this.getAttribute('data-delivery'))">Rejetée </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            <?php endif; ?>
+
+
+                            <?php if ($_SESSION['customer']['role_id'] == 2) : ?>
+                                <table id="state-saving-datatable" class="table activate-select dt-responsive nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th>Code Commande</th>
+                                            <th>Livrer par</th>
+                                            <th>Date de livraison</th>
+                                            <th>Client</th>
+                                            <th>Adresse de Livraison</th>
+                                            <th>Statut</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <?php foreach ($contactdeliveries['data'] as $key => $delivery) : ?>
+                                            <tr>
+                                                <td><?= $delivery->code ?></td>
+                                                <td><?= $delivery->supplier ?></td>
+                                                <td><?= $delivery->deliverydate ?></td>
+                                                <td><?= ucfirst($delivery->lastname) . ' ' . ucfirst($delivery->firstname) ?></td>
+                                                <td><?= $delivery->streetAdd . ' ' . $delivery->cityAdd . ' ' . $delivery->countryAdd ?></td>
+                                                <td>
+                                                    <?php
+                                                    if ($delivery->deliverystat == 2)
+                                                        echo '<span class="badge badge-soft-warning">En Cours</span>';
+                                                    elseif ($delivery->deliverystat == 1)
+                                                        echo '<span class="badge badge-soft-success">Terminée</span>';
+                                                    else
+                                                        echo '<span class="badge badge-soft-danger">Rejetée</span>';
+                                                    ?>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            <?php endif; ?>
+
+                        </div> <!-- end card body-->
+                    </div> <!-- end card -->
+                </div><!-- end col-->
+            </div>
+            <!-- end row-->
+
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+    <?php
+    include _VIEW_PATH . $lib->lang . '/dashboard_footer.phtml';
+    include _VIEW_PATH . 'dashboard_include_files.phtml';
+    ?>
+    <script>
+    
+    function switchDelStat(status, delivery){
+        //var delivery = document.getElementsByClassName("livraison")[0].id
+        //console.log(status);
+        $.ajax({
+            method : "POST",
+            url : "/customer/switchdelveryStat",
+            data : {
+                delivery : delivery,
+                status : status
+            },
+            success : function(msg){
+                console.log(msg);
+                var val = msg.split("||");
+                if(val[0] == "true"){
+                    toastr["success"](val[1]);
+                        location.reload();
+                }else if(val[0] == "false"){
+                    toastr["danger"](val[1]);
+                }
+            }
+        })
+    }
+    
+    </script>

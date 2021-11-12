@@ -1,0 +1,242 @@
+<section class="page-title-area">
+    <div class="container">
+        <div class="page-title-content">
+            <h1>Mon Panier</h1>
+            <!--<ul>
+                <li><a href="index.html">Home</a></li>
+                <li>Cart</li>
+            </ul>-->
+        </div>
+    </div>
+</section>
+
+
+<section class="cart-area ptb-70">
+    <div class="container">
+        <form>
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <div class="cart-table-desc table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Article</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col">Prix</th>
+                                    <th scope="col">Quantité</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (empty($_SESSION['shopping_cart'])) { ?>
+                                    <tr>
+                                        <td colspan="">Votre panier est vide</td>
+                                    </tr>
+                                <?php } else if (!empty($_SESSION['shopping_cart'])) { ?>
+
+                                    <?php
+
+                                    $total_price = 0;
+
+                                    foreach ($_SESSION['shopping_cart'] as $keys => $cartdetail) { ?>
+                                        <tr class="tr<?= $cartdetail['item_id'] ?> itemID">
+                                            <td class="product-thumbnail">
+                                                <a href="product_<?= $cartdetail->item_id ?>">
+                                                    <?php
+                                                    $itemImg = $sqlData->getItemFeaImg($cartdetail['item_id']);
+                                                    if ($itemImg['data'][0]->path) { ?>
+                                                        <img src="<?= $iniObj->imgPath . $itemImg['data'][0]->path ?>" alt="image">
+                                                    <?php } else { ?>
+                                                        <img src="<?= $iniObj->UIPath ?>/img/products/products-img1.jpg" alt="image">
+                                                    <?php  } ?>
+                                                </a>
+                                            </td>
+                                            <td class="product-name">
+                                                <a href="product_<?= $cartdetail['item_id'] ?>"><?= $cartdetail['item_name'] ?></a>
+                                            </td>
+                                            <td class="product-price">
+                                                <span class="unit-amount">€<?= $cartdetail['item_price'] ?></span>
+                                            </td>
+                                            <td class="product-quantity">
+                                                <div class="input-counter">
+                                                    <span class="minus-btn" onclick="decrement(<?= $cartdetail['item_id'] ?>)"><i class="bx bx-minus"></i></span>
+                                                    <input type="text" name="" id="quantity<?= $cartdetail['item_id'] ?>" min="1" value="<?= $cartdetail['item_quantity'] ?>">
+                                                    <span class="plus-btn" onclick="increment(<?= $cartdetail['item_id'] ?>)"><i class="bx bx-plus"></i></span>
+                                                </div>
+                                            </td>
+                                            <td class="product-subtotal">
+                                                <span class="subtotal-amount amount" id="<?= $cartdetail['item_quantity'] * $cartdetail['item_price'] ?>">€<?= $cartdetail['item_quantity'] * $cartdetail['item_price'] ?></span>
+                                                <a href="javascript:void(0)" data-id="<?= $cartdetail['item_id'] ?>" class="remove"><i class='bx bx-x'></i></a>
+                                            </td>
+                                        </tr>
+                                <?php
+
+                                        $total_price = $total_price + ($cartdetail['item_quantity'] * $cartdetail['item_price']);
+                                    }
+                                } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="cart-buttons-desc">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8 col-sm-8 col-md-8">
+                                <!-- <div class="shopping-coupon-code">
+                                    <input type="text" class="form-control" placeholder="Coupon code" name="coupon-code" id="coupon-code">
+                                    <button type="submit"> Coupon</button>
+                                </div> -->
+                            </div>
+                            <div class="col-lg-4 col-sm-4 col-md-4">
+                                <?php if (!empty($_SESSION['shopping_cart'])) : ?>
+                                    <a href="javascript:void(0)" onclick="deleteCart()" class="btn btn-danger"> Vider le panier</a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php if (!empty($_SESSION['shopping_cart'])) : ?>
+                    <div class="col-lg-4 col-md-12">
+                        <div class="cart-totals-desc">
+                            <h3>Cart Totals</h3>
+                            <ul>
+                                <li>Subtotal <span>€<?= $total_price ?></span></li>
+                                <li>Total <span>€<?= $total_price ?></span></li>
+                                <li>Payable Total <span>€<?= $total_price ?></span></li>
+                            </ul>
+
+                            <?php if ($_SESSION['customer']['authValidated'] == 1) { ?>
+                                <a href="/checkout" class="default-btn">Passer à la caisse</a>
+                            <?php } else { ?>
+                                <a href="javascript:void(0)" class="default-btn" id="chckbnt">Passer à la caisse</a>
+                            <?php } ?>
+                        </div>
+
+
+                    </div>
+                <?php endif; ?>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    $(".remove").on("click", function() {
+        var id = $(this).attr("data-id");
+        //alert(id);
+        $.ajax({
+            type: "post",
+            url: "/deletecartitem",
+            data: {
+                id: id
+            },
+            success: function(msg) {
+                console.log(msg);
+                var val = msg.split("||");
+                if (val[0] == "true")
+                    $("#cart_count").html(val[2]);
+                $.notify(val[1], "success");
+                $('.tr' + id).fadeOut("slow");
+            }
+        })
+    });
+
+    $("#chckbnt").on("click", function() {
+        $.notify("Veillez vous connecter avant de passer à la caisse", "success");
+    });
+
+    /* $(".decrement").on("click", function() {
+         var qtty = parseInt($("#qtty").val());
+         var price = document.getElementsByClassName("amount")[0].id;
+         if (qtty <= 1) {
+             var qty = 1;
+             var newprice = price;
+         } else {
+             var qty = qtty - 1;
+             var newprice = qty * price
+         }
+         savetoDB(qty, newprice);
+
+     });*/
+
+    function decrement(item_id) {
+        var quantity = $("#quantity" + item_id);
+        if (quantity.val() > 1) {
+            var newquantity = parseInt(quantity.val()) - 1;
+            updatecart(item_id, newquantity);
+        }
+
+        //console.log(newquantity);
+    }
+
+    function increment(item_id) {
+        var quatity = $("#quantity" + item_id);
+        var newquantity = parseInt(quatity.val()) + 1;
+        //console.log(newquantity)
+        updatecart(item_id, newquantity);
+    }
+
+    function updatecart(item_id, newquantity) {
+        $.ajax({
+            url: '/updatecart',
+            method: "POST",
+            data: {
+                item_id: item_id,
+                newquantity: newquantity
+            },
+            success: function(msg) {
+                console.log(msg);
+                var val = msg.split("||");
+                if (val[0] == "true") {
+                    $.notify(val[1], "success");
+                    $("#cart_coount").html(val[2])
+                    location.reload();
+                } else if (val[0] == "false") {
+                    $.notify(val[1], "success");
+                }
+            }
+        })
+    }
+
+    /*$(".increment").on("click", function() {
+        var qtty = parseInt($("#qtty").val());
+        var price = document.getElementsByClassName("amount")[0].id;
+        var qty = qtty + 1;
+        var newprice = qty * price;
+        savetoDB(qty, newprice);
+    });*/
+
+    function savetoDB(id, qty, newprice) {
+        console.log(id, qty, newprice);
+        /*$.ajax({
+            method: "POST",
+            url: "/itemcartqty",
+            data: {
+                item_cart_id: id,
+                qty: qty,
+                newprice: newprice
+            },
+            success: function(msg) {
+                console.log(msg);
+                var val = msg.split("||");
+                if (val[0] == "true") {
+                    $.notify(val[1], "success");
+                    location.reload();
+                }
+            }
+        });*/
+    }
+
+    function deleteCart() {
+        $.ajax({
+            url: "/emptycart",
+            method: "POST",
+            success: function(msg) {
+                console.log(msg);
+                var val = msg.split("||");
+                if (val[0] == "true") {
+                    $.notify(val[1], "success");
+                    location.reload();
+                }
+            }
+        });
+    }
+</script>

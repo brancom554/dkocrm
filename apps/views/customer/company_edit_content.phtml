@@ -1,0 +1,235 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><?= $lang->trl('Edit Company') ?></h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/customer/dashboard"><?= $lang->trl('Home') ?></a></li>
+                        <li class="breadcrumb-item active"><?= $lang->trl('Edit Company') ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-8">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><?= $lang->trl('Edit Company') ?></h3>
+                        </div>
+                        <header class="text-center mb-4">
+                            <div class="text-danger">
+                                <h6 id="error_message"></h6>
+                            </div>
+                            <div class="text-success">
+                                <h6 id="success_message"></h6>
+                            </div>
+                        </header>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form id="company_form">
+                            <div class="card-body">
+                                <input type="hidden" value="<?= $company_data->company_id ?>" id="company_id">
+                                <div class="form-group">
+                                    <label for="company_name"><?= $lang->trl('Company name') ?></label>
+                                    <input type="text" name="company_name" class="form-control" id="company_name" placeholder="" value="<?= $company_data->company_name ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="company_zipcode"><?= $lang->trl('Company zipcode') ?></label>
+                                    <input type="number" name="company_zipcode" class="form-control" id="company_zipcode" placeholder="" value="<?= $company_data->postal ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="company_adress"><?= $lang->trl('Company Address') ?></label>
+                                    <input type="text" name="company_adress" class="form-control" id="company_adress" placeholder="" value="<?= $company_data->adress ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="company_city"><?= $lang->trl('Company city') ?></label>
+                                    <input type="text" name="company_city" class="form-control" id="company_city" placeholder="" value="<?= $company_data->city ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="company_country"><?= $lang->trl('Company Country') ?></label>
+                                    <input type="text" name="company_country" class="form-control" id="company_country" placeholder="" value="<?= $company_data->country ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="activity_area"><?= $lang->trl('Field of activity') ?></label>
+                                    <input type="text" name="activity_area" class="form-control" id="activity_area" placeholder="" value="<?= $company_data->activity_area ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="company_type"><?= $lang->trl('Company type') ?></label>
+                                    <select class="form-control" name="company_type" id="company_type">
+                                        <option value="<?= $company_data->company_type ?>">
+                                            <?php 
+                                                if($company_data->company_type == 'private'){
+                                                    echo "Privé";
+                                                }else{
+                                                    echo "Public";
+                                                }
+                                            
+                                            ?>
+                                    </option>
+                                        <option value="public"><?= $lang->trl('Public') ?></option>
+                                        <option value="private"><?= $lang->trl('Private') ?></option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="code_naf"><?= $lang->trl('Code NAF') ?></label>
+                                    <input type="text" name="code_naf" class="form-control pull-right" id="code_naf" value="<?= $company_data->code_naf ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="website"><?= $lang->trl('Website') ?></label>
+                                    <input type="text" name="website" class="form-control pull-right" id="website" value="<?= $company_data->website ?>">
+                                </div>
+
+                                <!-- </div> -->
+                                <!-- <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+              </div> -->
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="button" onclick="updateCompany()" id="update_company" class="btn btn-primary pull-right"><?= $lang->trl('Update') ?></button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+
+
+                </div>
+
+                <!-- <div class="col-md-4">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Add a company</h3>
+                        </div>
+                        <form method="POST" action="/customer/saveNewCompany/" enctype="multipart/form-data">
+                            <input type="hidden" name="is_csv" />
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="company_csv">Importer un fichier CSV</label>
+                                    <input type="file" name="company_csv" class="form-control" id="company_csv" accept=".csv" /><br>
+                                    <button class="btn btn-success btn-sm" type="submit" name="importcsv" id="importcsv">Enregistrer</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--/.col (left) -->
+                <!-- right column -->
+
+                <!--/.col (right) -->
+            </div>
+            <!-- /.row -->
+            <!--/.col (left) -->
+            <!-- right column -->
+            <!-- <div class="col-md-6"> -->
+            <!-- Form Element sizes -->
+            <!-- <div class="card card-success">
+              <div class="card-header">
+                <h3 class="card-title">Different Height</h3>
+              </div>
+              <div class="card-body">
+                <input class="form-control form-control-lg" type="text" placeholder=".form-control-lg">
+                <br>
+                <input class="form-control" type="text" placeholder="Default input">
+                <br>
+                <input class="form-control form-control-sm" type="text" placeholder=".form-control-sm">
+              </div> -->
+            <!-- /.card-body -->
+            <!-- </div> -->
+            <!-- /.card -->
+
+
+            <!-- /.card -->
+            <!-- </div> -->
+            <!--/.col (right) -->
+        </div>
+        <!-- /.row -->
+        <!-- </div> -->
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<script>
+    $('#submit_company').click(function() {
+        saveCompany();
+    })
+
+    function updateCompany() {
+        document.getElementById('update_company').innerHTML = "<?= $lang->trl('Saving company, please wait...') ?> <i class='fa fa-spinner fa-spin'></i>";
+        $("#update_company").attr("disabled", true);
+
+        var company_name = encodeURIComponent($("#company_name").val());
+        var company_id = encodeURIComponent($("#company_id").val());
+        var company_zipcode = encodeURIComponent($("#company_zipcode").val());
+        var company_city = encodeURIComponent($("#company_city").val());
+        var company_adress = encodeURIComponent($("#company_adress").val());
+        var company_country = encodeURIComponent($("#company_country").val());
+        var activity_area = encodeURIComponent($("#activity_area").val());
+        var company_type = encodeURIComponent($("#company_type").val());
+        var code_naf = encodeURIComponent($("#code_naf").val());
+        var website = encodeURIComponent($("#website").val());
+
+
+        // alert(code_naf)
+        $.ajax({
+            url: '/customer/updatecompany/',
+            type: 'POST',
+            data: {
+                company_id: company_id,
+                company_name: company_name,
+                company_zipcode: company_zipcode,
+                company_city: company_city,
+                company_adress: company_adress,
+                company_country: company_country,
+                activity_area: activity_area,
+                company_type: company_type,
+                code_naf: code_naf,
+                website : website
+            },
+
+            success: function(msg) {
+                var val = msg.split('||');
+                console.log(msg);
+                if (val[0] == "false") {
+                    $("#error_message").html(val[1]);
+                    $("#error_message").show();
+                    $("#update_company").attr("disabled", false);
+                    $("#update_company").html("Enregistrer");
+
+                } else if (val[0] == "true") {
+                    $("#update_company").html(val[1]);
+                    $("#error_message").html("");
+                    $("#update_company").show();
+                    $("#update_company").html(val[1]).attr("disabled", true);
+
+                    rnd = Math.random();
+                    window.location.href = '/customer/companies/' + rnd;
+
+
+                }
+
+            },
+            error: function(resultat, statut, erreur) {
+                $("#error_message").html("<?= $lang->trl('Error, please try again') ?>. <i class='fa fa-stop-circle'></i>");
+                console.log('Resultat : ' + resultat);
+                console.log('Statut : ' + statut);
+                console.log('Erreur : ' + erreur);
+            }
+        });
+
+    }
+</script>

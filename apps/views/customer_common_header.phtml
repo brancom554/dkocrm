@@ -1,0 +1,45 @@
+<?php
+
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+?>
+
+<?php
+$userinfo = $sqlData->getUserinfo($_SESSION['customer']['contact_id']);
+//$lib->debug($userinfo);
+//exit;
+?>
+
+
+<!doctype html>
+<html lang="zxx">
+
+
+
+
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="<?= $iniObj->UIPath ?>/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= $iniObj->UIPath ?>/css/flaticon.css">
+    <link rel="stylesheet" href="<?= $iniObj->UIPath ?>/css/animate.min.css">
+    <link rel="stylesheet" href="<?= $iniObj->UIPath ?>/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="<?= $iniObj->UIPath ?>/css/boxicons.min.css">
+    <link rel="stylesheet" href="<?= $iniObj->UIPath ?>/css/meanmenu.min.css">
+    <link rel="stylesheet" href="<?= $iniObj->UIPath ?>/css/nice-select.min.css">
+    <link rel="stylesheet" href="<?= $iniObj->UIPath ?>/css/rangeSlider.min.css">
+    <link rel="stylesheet" href="<?= $iniObj->UIPath ?>/css/magnific-popup.min.css">
+    <link rel="stylesheet" href="<?= $iniObj->UIPath ?>/css/style.css">
+    <link rel="stylesheet" href="<?= $iniObj->UIPath ?>/css/responsive.css">
+    <link rel="stylesheet" href="<?= $iniObj->UIPath ?>/css/checkout.css">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <title><?= $title ?></title>
+    <link rel="icon" type="image/png" href="<?= $iniObj->UIPath ?>assets/img/favicon.png">
+    <script src="<?= $iniObj->UIPath ?>/js/jquery.min.js"></script>
+    <script type="application/javascript" src="https://dropin-sandbox.gocardless.com/script.js"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AZ5MKHtWzOaQoBh42NH_AkRdSK2pxJ5kmj7oXwPJf9Ajp5EPB8basD8bxLOSP7okxwWU6vue6fguJhOi&currency=EUR"></script>
+</head>

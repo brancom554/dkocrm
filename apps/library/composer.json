@@ -1,0 +1,6 @@
+{
+    "require": {
+        "gocardless/gocardless-pro": "^4.11",
+        "adoy/oauth2": "^1.3"
+    }
+}

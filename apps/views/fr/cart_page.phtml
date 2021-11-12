@@ -1,0 +1,13 @@
+<?php  
+if ($iniObj->debugViews)
+    echo __FILE__;
+$title = "Panier || ".$iniObj->serviceName;
+include _VIEW_PATH . "/customer_common_header.phtml";
+include _VIEW_PATH . "/customer_common_top_bar.phtml";
+include _VIEW_PATH . $lib->lang . "/customer_menu.phtml";
+include _VIEW_PATH.$lib->lang."/cart_content.phtml";
+include _VIEW_PATH . $lib->lang . "/customer_common_footer.phtml";
+include _VIEW_PATH . "/customer_common_include_files.phtml";
+?>
+
+

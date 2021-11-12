@@ -1,0 +1,53 @@
+<?php
+
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title><?= $title ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta content="CRM Pour prospection" name="description" />
+    <meta content="DKO" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="<?= $iniObj->UIPath ?>/backoffice/images/favicon.ico">
+
+
+    <!-- Plugins css -->
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/bootstrap-touchspin/jquery.bootstrap-touchspin.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/select2/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/bootstrap-colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/quill/quill.core.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/quill/quill.snow.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- App css -->
+    <link href="<?= $iniObj->UIPath ?>/backoffice/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?= $iniObj->UIPath ?>/backoffice/css/theme.min.css" rel="stylesheet" type="text/css" />
+    <!-- Dropify css -->
+    <link href="<?= $iniObj->UIPath ?>/backoffice/toastr/build/toastr.min.css" rel="stylesheet" type="text/css" />
+
+    <!-- toastr css -->
+    <link href="<?= $iniObj->UIPath ?>/backoffice/plugins/dropify/dropify.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="<?= $iniObj->UIPath ?>/css/checkout.css">
+
+
+
+    <script src="<?= $iniObj->UIPath ?>/js/jquery.min.js"></script>
+</head>

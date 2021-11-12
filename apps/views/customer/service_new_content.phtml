@@ -1,0 +1,162 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Ajouter un service</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Ajouter un service</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-8">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Add a service</h3>
+            </div>
+            <!-- /.card-header -->
+
+            <header class="text-center mb-4">
+              <div class="text-danger">
+                <h6 id="error_message"></h6>
+              </div>
+              <div class="text-success">
+                <h6 id="success_message"></h6>
+              </div>
+            </header>
+            <!-- form start -->
+            <form>
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Select a contact : </label>
+                  <select name="contact_id" id="contact_id" class="form-control">
+                    <option value=""></option>
+                    <?php foreach ($contacts as $contact) { ?>
+                      <option value="<?= $contact->contact_id ?>"><?= $contact->contact_lastname . ' ' . $contact->contact_firstname  ?></option>
+                    <?php  } ?>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Select a company : </label>
+                  <select class="form-control">
+                    <option value="company_id" id="company_id"></option>
+                    <?php foreach ($companies as $company) { ?>
+                      <option value="<?= $company->company_id ?>"><?= $company->company_name ?></option>
+                    <?php  } ?>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="servicelabel">Service label : </label>
+                  <input type="text" name="servicelabel" class="form-control" id="servicelabel" placeholder="Service label">
+                </div>
+
+              </div>
+              <!-- /.card-body -->
+
+              <div class="card-footer">
+                <button type="button" id="submit_service" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+
+
+        </div>
+        <!--/.col (left) -->
+        <!-- right column -->
+        <!-- <div class="col-md-6"> -->
+        <!-- Form Element sizes -->
+        <!-- /.card -->
+        <!-- </div> -->
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<script>
+  $('#submit_service').click(function() {
+    saveService();
+  })
+
+  function saveService() {
+    document.getElementById('submit_service').innerHTML = "Enregistrement en cours. Veuillez patienter  ... <i class='fa fa-spinner fa-spin'></i>";
+
+
+    var contact_id = encodeURIComponent($("#contact_id").val());
+    var company_id = encodeURIComponent($("#company_id").val());
+    var servicelabel = encodeURIComponent($("#servicelabel").val());
+    // alert(code_naf)
+    $.ajax({
+      url: '/customer/saveNewService/',
+      type: 'POST',
+      data: {
+        servicelabel: servicelabel,
+        company_id: company_id,
+        contact_id: contact_id
+      },
+
+      success: function(msg) {
+        var val = msg.split('||');
+        console.log(msg);
+        if (val[0] == "false") {
+          $("#error_message").html(val[1]);
+          $("#error_message").show();
+          $("#submit_company").attr("disabled", false);
+          $("#submit_company").html("Enregistrer");
+
+        } else if (val[0] == "true") {
+          $("#success_message").html(val[1]);
+          $("#error_message").html("");
+          $("#success_message").show();
+          $("#submit_company").html(val[1]).attr("disabled", true);
+
+          rnd = Math.random();
+          window.location.href = '/customer/companies/' + rnd;
+
+
+        }
+
+      },
+      error: function(resultat, statut, erreur) {
+        $("#error_message").html("Une erreur s'est produite. Veuillez réessayer. <i class='fa fa-stop-circle'></i>");
+        console.log('Resultat : ' + resultat);
+        console.log('Statut : ' + statut);
+        console.log('Erreur : ' + erreur);
+      }
+    });
+
+  }
+
+  function laodContact(id) {
+    //console.log(id);
+    $.ajax({
+      method: "POST",
+      url: "/customer/getcontact",
+      data: {
+        id: id
+      },
+      success: function(data) {
+        //console.log(data);
+        $("#mission_contact").html(data);
+      }
+    })
+  }
+</script>

@@ -1,0 +1,5 @@
+{
+    "require": {
+        "thecodeisbae/excel-to-csv": "dev-master"
+    }
+}

@@ -1,0 +1,253 @@
+<?php
+if ($iniObj->debugViews)
+    echo __FILE__;
+$title = "Paramêtres || Tableau de bord || " . $iniObj->serviceName;
+include _VIEW_PATH . '/dashboard_head.phtml';
+include _VIEW_PATH . $lib->lang . '/dashboard_header.phtml';
+include _VIEW_PATH . $lib->lang . '/dashboard_sidebar.phtml';
+?>
+
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0 font-size-18"><?= $_SESSION['customer']['fisrtname'] . ' ' . $_SESSION['customer']['lastname'] ?></h4>
+
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-md-5">
+
+                            <form id="profil_img">
+                                <a href="javascript:void(0)" onclick="openDialog()">
+                                    <?php if ($_SESSION['customer']['img'] == null) { ?>
+                                        <img src="<?= $iniObj->UIPath ?>/uploads/user_avatar.png" id="apercu" class="card-img-top img-fluid rounded">
+                                        <!--<input type="file" class="dropify" name="profil_img" data-default-file="<?= $iniObj->UIPath ?>/uploads/user_avatar.png" />-->
+                                    <?php } else if ($_SESSION['customer']['img']) { ?>
+                                        <img src="<?= $iniObj->imgProfilePath . $userinfo['data'][0]->img ?>" id="apercu" class="card-img-top img-fluid rounded"">
+                                    <!--<input type=" file" class="dropify" name="profil_img" data-default-file="<?= $iniObj->UIPath ?>/" />-->
+                                    <?php } ?>
+                                </a>
+                                <input type="file" id="contact_img" name="contact_img" style="display : none" name="profil_img">
+                                <div>
+                                    <a href="javascript:void(0)" onclick="uploapFile()">Modifier Image</a>
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <div class="col-md-7">
+                            <form action="" method="" id="editEdit">
+                                <p>Informations Personnelles</p>
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <input type="text" name="lastname" class="form-control" value="<?= $userinfo['data'][0]->lastname ?>">
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <input type="text" name="firstname" class="form-control" value="<?= $userinfo['data'][0]->fisrtname ?>">
+                                    </div>
+                                </div>
+                                <p>Contact</p>
+                                <div class="form-group">
+                                    <input type="email" name="email" class="form-control" value="<?= $userinfo['data'][0]->email  ?>">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="phone" class="form-control" value="<?= $userinfo['data'][0]->phone ?>">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Modifier</button>
+                                <br>
+                            </form>
+                            <br>
+                            <form id="editPass">
+                                <p>Gestion de mot de passe</p>
+                                <div class="form-group">
+                                    <input type="password" id="oldpass" name="pass1" class="form-control" value="">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" id="newpass" name="pass2" class="form-control" value="">
+                                </div>
+                                <div class="form-group">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" id="show-password" onclick="togglePass()">
+                                            <label class="form-check-label" for="show-password">Voir Mot de passe</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="editPass()" class="btn btn-primary">Modifier Mot de passe</button>
+                            </form>
+                        </div> <!-- end col -->
+
+                    </div>
+                    <!-- end row -->
+                </div> <!-- end col-->
+            </div> <!-- end row-->
+
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+    <?php
+    include _VIEW_PATH . $lib->lang . '/dashboard_footer.phtml';
+    include _VIEW_PATH . 'dashboard_include_files.phtml';
+    ?>
+    <script>
+        function togglePass() {
+            var pass1 = document.getElementById("oldpass");
+            var pass2 = document.getElementById("newpass");
+            if (pass1.type === "password" && pass2.type === "password") {
+                pass1.type = "text";
+                pass2.type = "text";
+            } else {
+                pass1.type = "password";
+                pass2.type = "password";
+            }
+        }
+
+
+        function openDialog() {
+            $("#contact_img").click()
+        }
+
+        $("#contact_img").change(function() {
+            $('#apercu').attr('src', '<?= $iniObj->UIPath ?>/uploads/user_avatar.png');
+            // recuperation de l'extension du fichier
+            var cheminImage = $(this)[0].value;
+            var extension = cheminImage.substring(cheminImage.lastIndexOf('.') + 1).toLowerCase();
+
+            if (extension == 'gif' || extension == 'png' || extension == 'jpg' || extension == 'jpeg') {
+
+                if (this.files && this.files[0]) {
+
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#apercu').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(this.files[0]);
+                }
+            }
+        })
+
+        $("#editEdit").on("submit", function() {
+            var email = $("input[name='email']").val();
+            var lastname = $("input[name='lastname']").val();
+            var firstname = $("input[name='firstname']").val();
+            var phone = $("input[name='phone']").val();
+
+
+            //alert(img);
+            $.ajax({
+                method: "POST",
+                url: "/edituser",
+                data: {
+                    email: email,
+                    lastname: lastname,
+                    firstname: firstname,
+                    phone: phone
+                    // oldpassword: oldpassword,
+                    // newpassword: newpassword
+                },
+                success: function(msg) {
+                    console.log(msg);
+                    var val = msg.split("||");
+                    if (val[0] == "true") {
+                        $.notify(val[1], "success");
+                        location.reload();
+                    } else if (val[0] == "false") {
+                        $.notify(val[1], "error");
+                    }
+                }
+            })
+
+            return false;
+        })
+
+        $("#").on("", function() {
+            var oldpassword = $("input[name='pass1']").val();
+            var newpassword = $("input[name='pass2']").val();
+            //alert(newpassword);
+            $.ajax({
+                method: "POST",
+                url: "/edipass",
+                data: {
+                    oldpassword: oldpassword,
+                    newpassword: newpassword
+                },
+                success: function(msg) {
+                    console.log(msg);
+                    var val = msg.split("||");
+                    if (val[0] == "true") {
+                        toastr["success"](val[1]);
+                    } else if (val[0] == "false") {
+                        toastr["error"](val[1]);
+                    }
+                }
+            })
+
+            return false;
+        })
+
+        function editPass() {
+
+            var oldpassword = $("input[name='pass1']").val();
+            var newpassword = $("input[name='pass2']").val();
+            //alert(newpassword);
+            $.ajax({
+                method: "POST",
+                url: "/edipass",
+                data: {
+                    oldpassword: oldpassword,
+                    newpassword: newpassword
+                },
+                success: function(msg) {
+                    console.log(msg);
+                    var val = msg.split("||");
+                    if (val[0] == "true") {
+                        toastr["success"](val[1]);
+                        $("#editPass")[0].reset();
+                    } else if (val[0] == "false") {
+                        toastr["error"](val[1]);
+                    }
+                }
+            })
+        }
+
+        function uploapFile() {
+            var form = $("#profil_img")[0];
+            var formData = new FormData(form);
+            //console.log(form);
+            $.ajax({
+                url: "/profilImg",
+                type: "POST",
+                enctype: 'multipart/form-data',
+                data: formData,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function(msg) {
+                    console.log(msg);
+                    var val = msg.split("||");
+                    if (val[0] == "true") {
+                        toastr["success"](val[1]);
+                        location.reload();
+                    }
+                }
+            })
+        }
+    </script>

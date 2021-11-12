@@ -1,0 +1,226 @@
+<?php
+// if($iniObj->debugViews) echo __FILE__ ;
+// $carouselActive = true;
+// $title = "Articles neufs et occasions - Professionnel - Dépôt vente - Electroménager - Décoration - Informatique - Jeux vidéo - Son - Image - Téléphonie - Bricolage - Jardinage - Animalerie";
+include _VIEW_PATH . "/common_header.phtml"; ?>
+
+<?php
+include _VIEW_PATH . "/customer/profile_left_menu.phtml";
+include _VIEW_PATH . "common_top_bar.phtml";
+// include _VIEW_PATH.$lib->lang."/top_menu.phtml";
+?>
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><?= $title ?></h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#"><?= $lang->trl('Home') ?></a></li>
+                        <li class="breadcrumb-item active"><?= $title ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+
+                    <!-- Profile Image -->
+                    <div class="card card-primary card-outline">
+                        <div class="card-body box-profile">
+                            <form id="profile_img">
+                                <div class="text-center" onclick="openDialog()">
+                                    <?php if ($user_connect->img) { ?>
+                                        <img class="profile-user-img img-fluid img-circle" id="apercu" src="<?= $iniObj->imgProfilePath . $user_connect->img ?>" alt="User profile picture">
+                                    <?php } else { ?>
+                                        <img class="profile-user-img img-fluid img-circle" id="apercu" src="<?= $iniObj->UIPath ?>/img/user_placeholder.png" alt="User profile picture">
+                                    <?php } ?>
+                                </div>
+                                <input type="file" id="contact_img" name="contact_img" style="display : none" name="profil_img">
+                                <h3 class="profile-username text-center"><?= ucfirst($user_connect->firstname) . ' ' . ucfirst($user_connect->lastname) ?></h3>
+
+                                <p class="text-muted text-center"><?= ucfirst($user_connect->role) ?></p>
+
+                                <a href="javascript:void(0)" onclick="updateIMG()" class="btn btn-primary btn-block"><b><?= $lang->trl('Edit') ?></b></a>
+                            </form>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="tab-content">
+
+                                <div class="active tab-pane" id="settings">
+                                    <form class="form-horizontal">
+                                        <div class="form-group row">
+                                            <label for="inputName" class="col-sm-2 col-form-label"><?= $lang->trl('Full Name') ?></label>
+                                            <div class="col-sm-10">
+                                                <input type="text" value="<?= ucfirst($user_connect->firstname) . ' ' . ucfirst($user_connect->lastname) ?>" class="form-control" id="inputName" placeholder="" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="inputEmail" class="col-sm-2 col-form-label"><?= $lang->trl('Email') ?></label>
+                                            <div class="col-sm-10">
+                                                <input type="email" class="form-control" id="inputEmail" placeholder="" value="<?= $user_connect->email ?>" readonly>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <!-- /.tab-pane -->
+                            </div>
+                            <!-- /.tab-content -->
+                        </div><!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"><?= $lang->trl('Password change') ?></h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form id="changepwd">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <input type="password" name="oldpass" class="form-control" id="oldpass" placeholder="<?= $lang->trl('Old Password') ?>">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="newpass" class="form-control" id="newpass" placeholder="<?= $lang->trl('New Password') ?>">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="confirmnewpass" class="form-control" id="confirmnewpass" placeholder="<?= $lang->trl('Confirm New Password') ?>">
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" onclick="togglePass()">
+                                    <label class="form-check-label" for="exampleCheck1"><?= $lang->trl('Display Password') ?></label>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-primary" onclick="editPass()"><?= $lang->trl('Submit') ?></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+
+
+
+<?php include _VIEW_PATH . $lib->lang . "/common_footer.phtml"; ?>
+<?php include _VIEW_PATH . "/common_include_files.phtml"; ?>
+
+<script>
+    function togglePass() {
+        // console.log("ok")
+        var pass1 = document.getElementById("oldpass");
+        var pass2 = document.getElementById("newpass");
+        var pass3 = document.getElementById("confirmnewpass");
+        if (pass1.type === "password" && pass2.type === "password" && pass3.type === "password") {
+            pass1.type = "text";
+            pass2.type = "text";
+            pass3.type = "text";
+        } else {
+            pass1.type = "password";
+            pass2.type = "password";
+            pass3.type = "password";
+        }
+    }
+
+    function editPass() {
+        var oldpassword = $("#oldpass").val();
+        var newpassword = $("#newpass").val();
+        var confirmnewpass = $("#confirmnewpass").val();
+        //alert(newpassword);
+        $.ajax({
+            method: "POST",
+            url: "/customer/edipass",
+            data: {
+                oldpassword: oldpassword,
+                newpassword: newpassword,
+                confirmnewpass: confirmnewpass
+            },
+            success: function(msg) {
+                console.log(msg);
+                var val = msg.split("||");
+                if (val[0] == "true") {
+                    toastr["success"](val[1]);
+                    $("#changepwd")[0].reset();
+                } else if (val[0] == "false") {
+                    toastr["error"](val[1]);
+                }
+            }
+        })
+    }
+
+    function openDialog() {
+        $("#contact_img").click()
+    }
+
+    $("#contact_img").change(function() {
+        $('#apercu').attr('src', '<?= $iniObj->UIPath ?>/img/user_avatar.png');
+        // recuperation de l'extension du fichier
+        var cheminImage = $(this)[0].value;
+        var extension = cheminImage.substring(cheminImage.lastIndexOf('.') + 1).toLowerCase();
+
+        if (extension == 'gif' || extension == 'png' || extension == 'jpg' || extension == 'jpeg') {
+
+            if (this.files && this.files[0]) {
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#apercu').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        }
+    })
+
+    function updateIMG() {
+        var form = $("#profile_img")[0];
+        var formData = new FormData(form);
+        $.ajax({
+            url: "/customer/editimg",
+            type: "POST",
+            enctype: 'multipart/form-data',
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            success: function(msg) {
+                console.log(msg);
+                var val = msg.split("||");
+                if (val[0] == "true") {
+                    toastr["success"](val[1]);
+                    location.reload();
+                } else if (val[0] == "false") {
+                    toastr["error"](val[1]);
+                }
+            }
+        })
+    }
+</script>

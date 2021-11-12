@@ -1,0 +1,283 @@
+<?php
+// if($iniObj->debugViews) echo __FILE__ ;
+// $carouselActive = true;
+// $title = "Articles neufs et occasions - Professionnel - Dépôt vente - Electroménager - Décoration - Informatique - Jeux vidéo - Son - Image - Téléphonie - Bricolage - Jardinage - Animalerie";
+include _VIEW_PATH . "/common_header.phtml"; ?>
+
+<?php
+include _VIEW_PATH . "/customer/profile_left_menu.phtml";
+include _VIEW_PATH . "common_top_bar.phtml";
+// include _VIEW_PATH.$lib->lang."/top_menu.phtml";
+?>
+
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><?= $lang->trl('Compose') ?></h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/customer/dashboard"><?= $lang->trl('Home') ?></a></li>
+                        <li class="breadcrumb-item active"><?= $lang->trl('Compose') ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <a href="/customer/mailer" class="btn btn-primary btn-block mb-3"><?= $lang->trl('Sent elements') ?></a>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"><?= $lang->trl('Folder') ?></h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <ul class="nav nav-pills flex-column">
+                                <li class="nav-item">
+                                    <a href="/customer/mailer" class="nav-link">
+                                        <i class="far fa-envelope"></i> <?= $lang->trl('Sents') ?>
+                                        <span class="badge bg-primary float-right"><?= $sentmail['rows'] ?></span>
+                                    </a>
+                                </li>
+                                <?php if ($_SESSION['customer']['role_id'] == 1) : ?>
+                                    <li class="nav-item">
+                                        <a href="/customer/allmessages" class="nav-link">
+                                            <i class="far fa-envelope"></i> <?= $lang->trl('All messages') ?>
+                                            <span class="badge bg-primary float-right"><?= $allsentmail['rows'] ?></span>
+                                        </a>
+                                    </li>
+                                <?php endif; ?>
+                            </ul>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+                <div class="col-md-9">
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title"><?= $lang->trl('Compose New Mail') ?></h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <form id="compose_mail" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <select name="emailtype" id="emailtype" class="form-control">
+                                        <option value="">-- <?= $lang->trl('Email Type') ?> --</option>
+                                        <?php foreach ($types as $key => $type) : ?>
+                                            <option value="<?= $type->type_email_id ?>"><?= $type->name ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select name="company" id="company" class="form-control" onchange="laodContact($(this).find(':selected').attr('data-id'))">
+                                        <option value="">-- <?= $lang->trl('Company') ?> --</option>
+                                        <?php foreach ($companies as $key => $company) : ?>
+                                            <option data-id="<?= $company->company_id  ?>" value="<?= $company->company_id ?>"><?= strtoupper($company->company_name) ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select name="contact_mail" id="contact_mail" class="form-control">
+                                        <option value="">-- <?= $lang->trl('Contact') ?> --</option>
+                                    </select>
+                                </div>
+                                <!-- <div class="form-group">
+                                <input class="form-control" placeholder="To:">
+                            </div> -->
+                                <div class="form-group">
+                                    <input class="form-control" name="object" id="object" placeholder="<?= $lang->trl('Subject') ?>:">
+                                </div>
+
+                                <div class="form-group">
+                                    <textarea id="compose-textarea" name="compose" class="form-control" style="height: 300px">
+
+                                    </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <div class="btn btn-default btn-file">
+                                        <i class="fas fa-paperclip"></i> <?= $lang->trl('Attachment') ?>
+                                        <input id="attachment" type="file" name="attachment" onchange="displayUplodedfilenam()">
+                                    </div>
+                                    <p class="help-block" id="file_name"></p>
+                                </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <div class="float-right">
+                                <button type="button" id="previewbtn" onclick="previewEmail()" class="btn btn-default"><i class="fas fa-eye"></i> <?= $lang->trl('Preview') ?></button>
+                                <button type="button" id="sendbtn" onclick='sendmail()' class="btn btn-primary"><i class="far fa-envelope"></i> <?= $lang->trl('Send') ?></button>
+                            </div>
+                            <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> <?= $lang->trl('Discard') ?></button>
+                        </div>
+                        <!-- /.card-footer -->
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+
+<div class="modal fade" id="previewer">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"><?= $lang->trl('Viewer') ?></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="message">
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?= $lang->trl('Close') ?></button>
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<script>
+    function displayUplodedfilenam() {
+        var x = document.getElementById("attachment").value;
+        // console.log(name.value);
+        // var val = x.split("\'")
+        document.getElementById("file_name").innerHTML = x
+        // $("#file_name").html(name);
+    }
+
+    function laodContact(id) {
+        //console.log(id);
+        $.ajax({
+            method: "POST",
+            url: "/customer/getcontact",
+            data: {
+                id: id
+            },
+            success: function(data) {
+                //console.log(data);
+                $("#contact_mail").html(data);
+            }
+        })
+    }
+
+    function sendmail() {
+        document.getElementById('sendbtn').innerHTML = "<?= $lang->trl('Sending') ?>  ... <i class='fa fa-spinner fa-spin'></i>";
+        document.getElementById('sendbtn').disabled = true;
+        // var message = $('#compose-textarea').summernote('code');
+        // var emailtype = $("#emailtype").val();
+        // var company = $("#company").val();
+        // var contact = $("#contact_mail").val();
+        // var object = $("#object").val();
+        // var grille = $("#tarif").val();
+        // var active = $("#is_active").val();
+        // console.log(contact)
+        var form = $("#compose_mail")[0];
+        var form_data = new FormData(form)
+        $.ajax({
+            method: "POST",
+            url: "/customer/sendmail",
+            // data: {
+            //     message: message,
+            //     emailtype: emailtype,
+            //     company: company,
+            //     contact: contact,
+            //     object: object,
+            //     grille: grille,
+            //     active: active
+            // },
+            data: form_data,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            success: function(msg) {
+                console.log(msg);
+                var val = msg.split("||");
+                if (val[0] == "true") {
+                    Toast.fire({
+                        icon: 'success',
+                        title: val[1]
+                    });
+                    document.getElementById('sendbtn').disabled = false;
+                    document.getElementById('sendbtn').innerHTML = "<?= $lang->trl('Send') ?>";
+                    $("#compose_mail")[0].reset();
+                    // location.reload();
+                    window.location.href = "/customer/mailer";
+                } else if (val[0] == "false") {
+                    Toast.fire({
+                        icon: 'error',
+                        title: val[1]
+                    });
+                    document.getElementById('sendbtn').disabled = false;
+                    document.getElementById('sendbtn').innerHTML = "<?= $lang->trl('Send') ?>";
+                    // $("#compose_mail")[0].reset();
+                }
+            }
+        })
+    }
+
+    function previewEmail() {
+        document.getElementById('previewbtn').innerHTML = "<?= $lang->trl('Previewing') ?>  ... <i class='fa fa-spinner fa-spin'></i>";
+        document.getElementById('previewbtn').disabled = true;
+        var message = $('#compose-textarea').summernote('code');
+        var emailtype = $("#emailtype").val();
+        var company = $("#company").val();
+        var contact = $("#contact_mail").val();
+        var object = $("#object").val();
+        // console.log(message);
+        $.ajax({
+            method: "POST",
+            url: "/customer/mailpreview",
+            data: {
+                message: message,
+                emailtype: emailtype,
+                company: company,
+                contact: contact,
+                object: object
+            },
+            success: function(msg) {
+                console.log(msg);
+                $("#message").html(msg);
+                $("#previewer").modal('show');
+                document.getElementById('previewbtn').innerHTML = "<?= $lang->trl('Preview') ?> <i class='fas fa-eye'></i>";
+                document.getElementById('previewbtn').disabled = false;
+            }
+        })
+    }
+</script>
+
+
+
+<?php include _VIEW_PATH . $lib->lang . "/common_footer.phtml"; ?>
+<?php include _VIEW_PATH . "/common_include_files.phtml"; ?>
+<script>
+    $(function() {
+        //Add text editor
+        $('#compose-textarea').summernote()
+    })
+</script>

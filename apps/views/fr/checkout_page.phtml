@@ -1,0 +1,347 @@
+<?php
+
+if ($iniObj->debugViews)
+    echo __FILE__;
+$title = "Checkout || " . $iniObj->serviceName;
+include _VIEW_PATH . "/customer_common_header.phtml";
+include _VIEW_PATH . "/customer_common_top_bar.phtml";
+include _VIEW_PATH . $lib->lang . "/customer_menu.phtml";
+?>
+
+<div id="loader" class="loader" style="display:none ;">
+    <img src="<?= $iniObj->UIPath ?>/img/loader.gif">
+    <h3>Un email vous sera envoyer pour la suite du paiement</h3>
+</div>
+
+<section class="page-title-area">
+    <div class="container">
+        <div class="page-title-content">
+            <h1>Checkout</h1>
+            <!-- <ul>
+                <li><a href="index.html">Acceui</a></li>
+                <li>Checkout</li>
+            </ul> -->
+        </div>
+    </div>
+</section>
+
+
+<section class="checkout-area ptb-70">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-12">
+                <div class="billing-details-desc">
+                    <h3>Détails Commande</h3>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="form-group">
+                                <label>Pays</label>
+                                <input type="text" class="form-control" name="adress_contry" <?= ($addressCon['data'][0]->country) ? "value = " . $addressCon['data'][0]->country : 'placeholder = Pays'  ?>>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label>Nom <span class="required">*</span></label>
+                                <input type="text" class="form-control" name="contact_lastname" value="<?= $contact_lastname ?>">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label>Prénoms <span class="required">*</span></label>
+                                <input type="text" class="form-control" name="contact_firstname" value="<?= $contact_firstname ?>">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="form-group">
+                                <label>Société</label>
+                                <input type="text" class="form-control" name="company_name" <?= ($company['data'][0]->name) ? "value = " . $company['data'][0]->name : 'placeholder = Entreprise'  ?>>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="form-group">
+                                <label>Téléphone de la Société</label>
+                                <input type="text" class="form-control" name="company_phone" <?= ($company['data'][0]->phone) ? "value = " . $company['data'][0]->phone : 'placeholder = Téléphone'  ?>>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label>Adresse Email<span class="required">*</span></label>
+                                <input type="text" class="form-control" name="contact_email" value="<?= $contact_email ?>">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label>Téléphone <span class="required">*</span></label>
+                                <input type="text" class="form-control" name="contact_phone" value="<?= $contact_phone ?>">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-6">
+                            <div class="form-group">
+                                <label>Adresse <span class="required">*</span></label>
+                                <input type="text" class="form-control" name="address" <?= ($addressCon['data'][0]->street) ? "value = " . $addressCon['data'][0]->street : 'placeholder = Addresse'  ?>>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            <div class="form-group">
+                                <label>Ville <span class="required">*</span></label>
+                                <input type="text" class="form-control" name="address_city" <?= ($addressCon['data'][0]->city) ? "value = " . $addressCon['data'][0]->city : 'placeholder = Ville'  ?>>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="form-group">
+                                <label>Code Postal <span class="required">*</span></label>
+                                <input type="text" class="form-control" name="address_postal" <?= ($addressCon['data'][0]->postalcode) ? "value = " . $addressCon['data'][0]->postalcode : 'placeholder = Code postal'  ?>>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12">
+                            <div class="form-group">
+                                <label>Laisser une note</label>
+                                <textarea name="notes" id="notes" cols="30" rows="5" class="form-control" name="order_note"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php if ($_SESSION['shopping_cart']) : ?>
+                <?php
+                $total_price = 0;
+                foreach ($_SESSION['shopping_cart'] as $key => $values) {
+                    $total_price = $total_price + ($values['item_quantity'] * $values['item_price']);
+                }
+                ?>
+                <div class="col-lg-5 col-md-12">
+                    <div class="order-details-desc">
+                        <h3>Commande Infos</h3>
+                        <ul class="order-details">
+                            <li>Total <span>€ <?= $total_price ?></span></li>
+                            <li>Discount <span>€ 0.00</span></li>
+                            <li>Livraison <span>€ 00.00</span></li>
+                            <li>Tax <span>€ 00.00</span></li>
+                            <li>Total de la commande <span>€ <?= $total_price ?></span></li>
+                            <input type="hidden" name="total_order" value="<?= $total_price ?>">
+                        </ul>
+                        <!--<div class="payment-method">
+                            <p>
+                                <input type="radio" id="direct-bank-transfer" name="radio-group" checked>
+                                <label for="direct-bank-transfer">Direct Bank Transfer</label>
+                                Make your payment directly into our bank account. Please use your Order ID as the payment reference.
+                            </p>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="example-checkbox">
+                            <label class="form-check-label" for="example-checkbox">I've read and accept the <a href="terms-conditions.html">Terms & Condtions</a>*</label>
+                        </div>-->
+                        <button type="buttons" data-id="virement" onclick="submitCheckout(this.getAttribute('data-id'))" class="default-btn">Payer Par Virement Bancaire</button>
+                        <button type="buttons" data-id="checque" onclick="submitCheckout(this.getAttribute('data-id'))" class="default-btn">Payer Par Chèque</button><br>
+                        <div id="paypal-button-container"></div>
+                        <!-- <button type="button" class="default-btn" id="pay-with-gocardless-button">Prélevement banquaire (GoCardless)</button> -->
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+
+
+<?php
+
+include _VIEW_PATH . $lib->lang . "/customer_common_footer.phtml";
+include _VIEW_PATH . "/customer_common_include_files.phtml";
+?>
+<script>
+
+</script>
+<script>
+
+    //payTotal = $("input[name='total_order']").val(),
+
+
+    var price = $("input[name='total_order']").val();
+
+    paypal.Buttons({
+        
+        // Set up the transaction
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '<?= $total_price ?>'
+                    }
+                }]
+            });
+        },
+
+        // Finalize the transaction
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                // Show a success message to the buyer
+                alert('Transfert effectué par ' + details.payer.name.given_name + '!');
+                submitCheckout('paypal',details.id);
+                //console.log(details.id);
+            });
+        }
+
+
+    }).render('#paypal-button-container');
+
+
+
+    function newPayment(order, method) {
+        $.ajax({
+            url: '/payment',
+            method: 'POST',
+            data: {
+                order: order,
+                method: method
+            },
+            success: function(msg) {
+                console.log(msg);
+            }
+        })
+    }
+
+    function submitCheckout(methode,tranref) {
+        // console.log('ok');
+        document.getElementById("loader").style.display = "inline-block";
+        var country = ($("input[name='adress_contry']").val());
+        var lastname = ($("input[name='contact_lastname']").val());
+        var firstname = ($("input[name='contact_firstname']").val());
+        var companyname = ($("input[name='company_name']").val());
+        var companyphone = ($("input[name='company_phone']").val());
+        var email = ($("input[name='contact_email']").val());
+        var phone = ($("input[name='contact_phone']").val());
+        var adddress = ($("input[name='address']").val());
+        var address_city = ($("input[name='address_city']").val());
+        var address_postal = ($("input[name='address_postal']").val());
+        var order_note = ($("input[name='order_note']").val());
+        var totalcheckout = $("input[name='total_order']").val();
+
+        //alert(country);
+
+        var res;
+
+        $.ajax({
+            type: "POST",
+            url: "/placeorder",
+            data: {
+                tranref : tranref,
+                methode: methode,
+                country: country,
+                lastname: lastname,
+                firstname: firstname,
+                companyname: companyname,
+                companyphone: companyphone,
+                email: email,
+                phone: phone,
+                adddress: adddress,
+                address_city: address_city,
+                address_postal: address_postal,
+                order_note: order_note,
+                totalcheckout: totalcheckout
+            },
+            success: function(msg) {
+                console.log(msg);
+                var val = msg.split("||");
+                if (val[0] == "true") {
+                    document.getElementById("loader").style.display = "none";
+                    $.notify(val[1], "success");
+                    window.location.href = "/successorder";
+                } else if (val[0] == "false") {
+                    document.getElementById("loader").style.display = "none";
+                    $.notify(val[1], "danger");
+                } else if (val[0] == "OK") {
+                    document.getElementById("loader").style.display = "none";
+
+                }
+            }
+        });
+    }
+
+    function tryreturn(data) {
+        return data;
+    }
+
+    // $("#").on("submit", function() {
+
+
+    //     var country = ($("input[name='adress_contry']").val());
+    //     var lastname = ($("input[name='contact_lastname']").val());
+    //     var firstname = ($("input[name='contact_firstname']").val());
+    //     var companyname = ($("input[name='company_name']").val());
+    //     var companyphone = ($("input[name='company_phone']").val());
+    //     var email = ($("input[name='contact_email']").val());
+    //     var phone = ($("input[name='contact_phone']").val());
+    //     var adddress = ($("input[name='address']").val());
+    //     var address_city = ($("input[name='address_city']").val());
+    //     var address_postal = ($("input[name='address_postal']").val());
+    //     var order_note = ($("input[name='order_note']").val());
+    //     var totalcheckout = $("input[name='total_order']").val();
+
+    //     //alert(country);
+
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/placeorder",
+    //         data: {
+    //             country: country,
+    //             lastname: lastname,
+    //             firstname: firstname,
+    //             companyname: companyname,
+    //             companyphone: companyphone,
+    //             email: email,
+    //             phone: phone,
+    //             adddress: adddress,
+    //             address_city: address_city,
+    //             address_postal: address_postal,
+    //             order_note: order_note,
+    //             totalcheckout: totalcheckout
+    //         },
+    //         success: function(msg) {
+    //             console.log(msg);
+    //             var val = msg.split("||");
+    //             if (val[0] == "true") {
+    //                 $.notify(val[1], "success");
+    //             } else if (val[0] == "false") {
+    //                 $.notify(val[1], "danger");
+    //             } else if (val[0] == "OK") {
+    //                 window.location.href = "/successorder";
+    //             }
+    //         }
+    //     });
+
+    //     return false;
+    // })
+</script>
+<script type="application/javascript">
+    var gocardlessHandler = function() {
+        var gocardlessClient = GoCardlessClient({
+            token: "[sandbox_Zh2TMjstdR2zxG48G9PrKpwEuQTgb0w-G_PkraVh]",
+        });
+
+        gocardlessClient.create({
+            onSave: function(payerAuthorisationId, confirmCallback, metadata) {
+                // 1. Optional: store the payerAuthorisationId server-side
+                // 2. Mandatory: call confirmCallback to let the Drop-in flow continue
+                confirmCallback();
+            },
+            onComplete: function(metadata) {
+                // The customer completed successfully
+                alert("Drop-in flow completed!");
+            },
+            onExit: function(error, metadata) {
+                if (error === undefined) {
+                    // The customer left intentionally the Drop-in flow
+                    // (for example they closed the modal interface).
+                } else {
+                    // The customer left due to unrecoverable error.
+                }
+            }
+        });
+    };
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document
+            .getElementById("pay-with-gocardless-button")
+            .addEventListener("click", gocardlessHandler);
+    });
+</script>

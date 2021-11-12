@@ -1,0 +1,100 @@
+<?php
+if ($iniObj->debugViews)
+    echo __FILE__;
+$title = "Détails utilisateur";
+include _VIEW_PATH . '/dashboard_head.phtml';
+include _VIEW_PATH . $lib->lang . '/dashboard_header.phtml';
+include _VIEW_PATH . $lib->lang . '/dashboard_sidebar.phtml';
+?>
+
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0 font-size-18">Détails utilisateur</h4>
+
+
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <img src="<?= $iniObj->UIPath ?>/uploads/user_avatar.png" class="rounded">
+                        </div>
+                        <div class="col-md-7">
+                            <!--<p>Informations Personnelles</p>
+                            <div class="row">
+                                <div class="col-md-6 form-group">
+                                    <input type="text" class="form-control" value="User Lastname">
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <input type="text" class="form-control" value="User Firstname">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" data-provide="datepicker" data-date-autoclose="true" value="User Birth date">
+                            </div>
+                            <p>Contact</p>
+                            <div class="form-group">
+                                <input type="email" class="form-control" value="User Email">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="User Tel">
+                            </div>
+                            <p>Gestion de mot de passe</p>
+                            <div class="form-group">
+                                <input type="password" class="form-control" value="Old Password">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control" value="New Password">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Changer</button>-->
+                            <p>
+                            <h3>Nom Prénom</h3> <span> <i class="mdi mdi-map-marker"></i> City C!ountry</span>
+                            </p>
+                            <div>
+                                <button type="button" class="btn btn-light waves-effect"><i class="bx bxs-message-square"></i> <span>Envoyer un message</span></button>
+                                <button type="button" class="btn btn-light waves-effect"><i class="mdi mdi-map-marker-alert"></i> <span>Signaler</span></button>
+
+                            </div>
+                            <br>
+                            <div>
+                                <h4>Informations générales</h4>
+                                <p>
+                                    <h5>Email : </h5> email@email.com
+                                </p>
+                                <p>
+                                    <h5>Téléphone : </h5> email@email.com
+                                </p>
+                                <p>
+                                    <h5>Adresse : </h5> Adresse
+                                </p>
+                            </div>
+                        </div> <!-- end col -->
+
+                    </div>
+                    <!-- end row -->
+                </div> <!-- end col-->
+            </div> <!-- end row-->
+
+        </div> <!-- container-fluid -->
+    </div>
+    <!-- End Page-content -->
+
+    <?php
+    include _VIEW_PATH . $lib->lang . '/dashboard_footer.phtml';
+    include _VIEW_PATH . 'dashboard_include_files.phtml';
+    ?>

@@ -1,0 +1,122 @@
+<?php
+// if($iniObj->debugViews) echo __FILE__ ;
+// $carouselActive = true;
+// $title = "Articles neufs et occasions - Professionnel - Dépôt vente - Electroménager - Décoration - Informatique - Jeux vidéo - Son - Image - Téléphonie - Bricolage - Jardinage - Animalerie";
+include _VIEW_PATH . "/common_header.phtml"; ?>
+
+<?php
+include _VIEW_PATH . "/customer/profile_left_menu.phtml";
+include _VIEW_PATH . "common_top_bar.phtml";
+// include _VIEW_PATH.$lib->lang."/top_menu.phtml";
+?>
+
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><?= $title ?></h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/customer/dashboard"><?= $lang->trl('Home') ?></a></li>
+                        <li class="breadcrumb-item active"><?= $title ?></li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-3">
+                <a href="/customer/newmail" class="btn btn-primary btn-block mb-3"><?= $lang->trl('New mail') ?></a>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><?= $lang->trl('Folder') ?></h3>
+
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="nav nav-pills flex-column">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="far fa-envelope"></i> <?= $lang->trl('Sents') ?>
+                                    <span class="badge bg-primary float-right"><?= $sentmail['rows'] ?></span>
+                                </a>
+                            </li>
+                            <?php if ($_SESSION['customer']['role_id'] == 1) : ?>
+                                <li class="nav-item">
+                                    <a href="/customer/allmessages" class="nav-link">
+                                        <i class="far fa-envelope"></i> <?= $lang->trl('All messages') ?>
+                                        <span class="badge bg-primary float-right"><?= $allsentmail['rows'] ?></span>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                        </ul>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+            <div class="col-md-9" style=" height: 800px; overflow: auto;">
+                <div class="card card-primary card-outline">
+                    <!-- /.card-header -->
+                    <div class="table-responsive mailbox-messages">
+                        <div style=" height: 100%; overflow: auto;">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th><?= $lang->trl('Contact') ?></th>
+                                        <th><?= $lang->trl('Subject') ?></th>
+                                        <th><?= $lang->trl('Date') ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if ($sentmail['rows'] == 0) { ?>
+                                        <td class="mailbox-name"><a href="javascript:void(0)"> <?= $lang->trl('No Messages availables') ?></a></td>
+                                    <?php } else { ?>
+                                        <?php foreach ($sentmail['data'] as $key => $mail) : ?>
+                                            <tr>
+                                                <td class=""> <?= ucfirst($mail->contact_firstname) . ' ' . ucfirst($mail->contact_lastname) ?></td>
+                                                <td class=""><b><?= $mail->subject ?></b></td>
+                                                <td class=""><?= $sqlData->refomat_date($mail->sent_date, 'full') ?></td>
+
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- /.table -->
+                    </div>
+                    <!-- /.mail-box-messages -->
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+        <!-- /.col -->
+</div>
+<!-- /.row -->
+</section>
+<!-- /.content -->
+</div>
+
+
+
+<?php include _VIEW_PATH . $lib->lang . "/common_footer.phtml"; ?>
+<?php include _VIEW_PATH . "/common_include_files.phtml"; ?>

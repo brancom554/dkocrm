@@ -1,0 +1,26 @@
+<?php
+
+if ($iniObj->debugViews)
+    echo __FILE__;
+$title = "Boutique || ".$iniObj->serviceName;
+include _VIEW_PATH . "/customer_common_header.phtml";
+?>
+<?php
+
+include _VIEW_PATH . "/customer_common_top_bar.phtml";
+?>
+
+<?php
+
+include _VIEW_PATH . $lib->lang . "/customer_menu.phtml";
+?>
+<?php
+
+include _VIEW_PATH . $lib->lang . "/shop_content.phtml";
+?>
+
+<?php
+
+include _VIEW_PATH . $lib->lang . "/customer_common_footer.phtml";
+include _VIEW_PATH."/customer_common_include_files.phtml";
+?>

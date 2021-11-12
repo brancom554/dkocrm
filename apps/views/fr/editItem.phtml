@@ -1,0 +1,425 @@
+<?php
+if ($iniObj->debugViews)
+    echo __FILE__;
+$title = ucfirst($proDetail->name) . " || Modification || ".$iniObj->serviceName;
+include _VIEW_PATH . '/dashboard_head.phtml';
+include _VIEW_PATH . $lib->lang . '/dashboard_header.phtml';
+include _VIEW_PATH . $lib->lang . '/dashboard_sidebar.phtml';
+?>
+
+<!-- ============================================================== -->
+<!-- Start right Content here -->
+<!-- ============================================================== -->
+<div class="main-content">
+
+    <div class="page-content">
+        <div class="container-fluid">
+
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box d-flex align-items-center justify-content-between">
+                        <h4 class="mb-0 font-size-18">REF: <?= $proDetail->reference ?>
+                            <small>
+                            </small>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="">
+                        <div class="row">
+                            <div class="col-8">
+                                <div class="form-group">
+                                    <input type="text" name="itemtitle" id="simpleinput" class="form-control" placeholder="Enter your text" value="<?= $proDetail->name ?>">
+                                    <input type="hidden" name="itemid" id="itemid" class="form-control" placeholder="Enter your text" value="<?= $proDetail->item_id ?>">
+                                </div>
+                                <div>
+                                    <h4 class="card-title">Description de l'article</h4>
+                                    <div class="">
+                                        <textarea id="editor1" name="editor1" rows="10" cols="80">
+                                            <?= $proDetail->description ?>
+                                            </textarea>
+                                    </div>
+
+                                </div>
+                                <br>
+                                <div>
+                                    <h4 class="card-title">Données de l'article</h4>
+                                    <div class="row">
+                                        <div class="col-sm-3 mb-2 mb-sm-0">
+                                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                                <a class="nav-link active show" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                                                    <i class="mdi mdi-home-variant d-lg-none d-block"></i>
+                                                    <span class="d-none d-lg-block">Générale</span>
+                                                </a>
+                                                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                                                    <i class="mdi mdi-account-circle d-lg-none d-block"></i>
+                                                    <span class="d-none d-lg-block">Inventaire</span>
+                                                </a>
+                                                <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                                                    <i class="mdi mdi-settings-outline d-lg-none d-block"></i>
+                                                    <span class="d-none d-lg-block">SPECS</span>
+                                                </a>
+                                            </div>
+                                        </div> <!-- end col-->
+
+                                        <div class="col-sm-9">
+                                            <div class="tab-content" id="v-pills-tabContent">
+                                                <div class="tab-pane fade active show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                                    <div class="form-group row mb-2">
+                                                        <label for="inputEmail3" class="col-3 col-form-label">Prix normal</label>
+                                                        <div class="col-4">
+                                                            <input type="text" class="form-control" id="itempricemax" name="itempricemax" placeholder="" value="<?= $proDetail->price_max ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row mb-2">
+                                                        <label for="inputEmail3" class="col-3 col-form-label">Prix promo</label>
+                                                        <div class="col-4">
+                                                            <input type="text" class="form-control" id="itempricemin" name="itempricemin" placeholder="" value="<?= $proDetail->price_min ?>">
+                                                        </div>
+                                                    </div>
+                                                    <a href="javascript:void(0)" onclick="schedule()">Durée de la promotion</a>
+                                                    <div id="promo" style="display: none;">
+                                                        <p>De :</p>
+                                                        <div class="form-group">
+                                                            <div class="col-4">
+                                                                <input type="text" class="form-control date" name="datedebprom" id="datedebprom" data-toggle="daterangepicker" data-single-date-picker="true">
+                                                            </div>
+                                                        </div>
+                                                        <p>A :</p>
+                                                        <div class="form-group">
+                                                            <div class="col-4">
+                                                                <input type="text" class="form-control date" name="datefinprom" id="datefinprom" data-toggle="daterangepicker" data-single-date-picker="true">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                                    <div class="form-group row mb-2">
+                                                        <label for="" class="col-3 col-form-label">Stock initial</label>
+                                                        <div class="col-4">
+                                                            <input type="number" class="form-control" name="itemstock" id="itemstock" placeholder="" value="<?= $proDetail->stock ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row mb-2">
+                                                        <label for="" class="col-3 col-form-label">Quantité Vendue</label>
+                                                        <div class="col-4">
+                                                            <input type="text" class="form-control" readonly value="<?= $qty->quatity ? $qty->quatity : 0 ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row mb-2">
+                                                        <label for="" class="col-3 col-form-label">Stock disponible</label>
+                                                        <div class="col-4">
+                                                            <input type="number" class="form-control" readonly value="<?= $proDetail->stock - $qty->quatity ?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+
+                                                </div>
+                                            </div> <!-- end tab-content-->
+                                        </div> <!-- end col-->
+                                    </div>
+                                    <!-- end row-->
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div style="text-align: left;">
+                                    <button type="" id="edititem" class="btn btn-primary">Mettre à jour</button>
+                                    <a href="/product_<?= $proDetail->item_id ?>" class="btn btn-success">Aperçu</a>
+                                    <br><br>
+                                </div>
+                                <div id="accordion" class="custom-accordion mb-4">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingOne">
+                                            <h5 class="m-0 font-size-15">
+                                                <a class="d-block pt-2 pb-2 text-dark" data-toggle="collapse" href="#category" aria-expanded="true" aria-controls="collapseOne">
+                                                    Catégorie <span class="float-right"><i class="mdi mdi-chevron-down accordion-arrow"></i></span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="category" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlSelect1">Catégorie</label>
+                                                    <select class="form-control" id="itemcategory">
+                                                        <option value="<?= $proDetail->category_id ?>"><?= $proDetail->category ?></option>
+                                                        <?php foreach ($othersCat['data'] as $key => $cat) : ?>
+                                                            <option value="<?= $cat->category_id ?>"><?= $cat->name ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- end card-->
+                                </div> <!-- end custom accordions-->
+                                <br><br>
+                                <div id="accordion" class="custom-accordion mb-4">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingOne">
+                                            <h5 class="m-0 font-size-15">
+                                                <a class="d-block pt-2 pb-2 text-dark" data-toggle="collapse" href="#image" aria-expanded="true" aria-controls="collapseOne">
+                                                    Article image <span class="float-right"><i class="mdi mdi-chevron-down accordion-arrow"></i></span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <form id="mainImage" enctype="multipart/form-data">
+                                            <div id="image" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <div>
+                                                        <a href="javascript:void(0)" onclick="openDialog()">
+                                                            <?php if ($itemFeAImg['data'][0]->path) { ?>
+                                                                <img src="<?= $iniObj->imgPath . $itemFeAImg['data'][0]->path ?>" id="apercu" class="card-img-top img-fluid rounded">
+                                                            <?php } else { ?>
+                                                                <img src="<?= $iniObj->UIPath ?>/uploads/item_placeolher.jpg" id="apercu" class="card-img-top img-fluid rounded">
+                                                            <?php } ?>
+                                                        </a>
+                                                    </div>
+                                                    <input type="file" name="img_en_avant[]" id="img_en_avant" multiple="multiple" style="display: none;">
+                                                    <input type="hidden" name="item_id" id="item_id" value="<?= $proDetail->item_id ?>">
+                                                    <div>
+                                                        <a href="javascript:void(0)" onclick="uloapFile()">Modifier Image</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div> <!-- end card-->
+                                </div> <!-- end custom accordions-->
+
+                                <br><br>
+                                <div id="accordion" class="custom-accordion mb-4">
+                                    <div class="card mb-0">
+                                        <div class="card-header" id="headingOne">
+                                            <h5 class="m-0 font-size-15">
+                                                <a class="d-block pt-2 pb-2 text-dark" data-toggle="collapse" href="#gelery" aria-expanded="true" aria-controls="collapseOne">
+                                                    Article Galerie <span class="float-right"><i class="mdi mdi-chevron-down accordion-arrow"></i></span>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <form id="imgGalery" enctype="multipart/form-data">
+                                            <div id="galery" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <a href="javascript:void(0)" onclick="openDialog1()">
+                                                                <img src="<?= $iniObj->UIPath ?>/uploads/item_placeolher.jpg" id="apercu1" class="img-fluid avatar-lg rounded">
+                                                            </a>
+                                                            <input type="file" name="img_item1" id="img_item1" style="display: none;">
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <a href="javascript:void(0)" onclick="openDialog2()">
+
+                                                                <img src="<?= $iniObj->UIPath ?>/uploads/item_placeolher.jpg" id="apercu2" class="img-fluid avatar-lg rounded">
+                                                            </a>
+                                                            <input type="file" name="img_item2" id="img_item2" style="display: none;">
+                                                        </div>
+                                                        <input type="hidden" name="itemID" id="itemID" value="<?= $proDetail->item_id ?>">
+                                                        <div>
+                                                            <a href="javascript:void(0)" onclick="uploadGalery()">Modifier Galerie</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div> <!-- end card-->
+                                </div> <!-- end custom accordions-->
+                            </div> <!-- end col -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- container-fluid -->
+</div>
+<!-- End Page-content -->
+
+<?php
+include _VIEW_PATH . $lib->lang . '/dashboard_footer.phtml';
+include _VIEW_PATH . 'dashboard_include_files.phtml';
+?>
+<script>
+    function openDialog() {
+        $("#img_en_avant").click()
+    };
+
+    function openDialog1() {
+        $("#img_item1").click()
+    };
+
+    function openDialog2() {
+        $("#img_item2").click()
+    };
+
+    $("#img_en_avant").change(function() {
+        $('#apercu').attr('src', '<?= $iniObj->UIPath ?>/uploads/item_placeolher.jpg');
+        // recuperation de l'extension du fichier
+        var cheminImage = $(this)[0].value;
+        var extension = cheminImage.substring(cheminImage.lastIndexOf('.') + 1).toLowerCase();
+
+        if (extension == 'gif' || extension == 'png' || extension == 'jpg' || extension == 'jpeg') {
+
+            if (this.files && this.files[0]) {
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#apercu').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        }
+    })
+
+    $("#img_item1").change(function() {
+        $('#apercu1').attr('src', '<?= $iniObj->UIPath ?>/uploads/item_placeolher.jpg');
+        // recuperation de l'extension du fichier
+        var cheminImage = $(this)[0].value;
+        var extension = cheminImage.substring(cheminImage.lastIndexOf('.') + 1).toLowerCase();
+
+        if (extension == 'gif' || extension == 'png' || extension == 'jpg' || extension == 'jpeg') {
+
+            if (this.files && this.files[0]) {
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#apercu1').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        }
+    })
+
+    $("#img_item2").change(function() {
+        $('#apercu2').attr('src', '<?= $iniObj->UIPath ?>/uploads/item_placeolher.jpg');
+        // recuperation de l'extension du fichier
+        var cheminImage = $(this)[0].value;
+        var extension = cheminImage.substring(cheminImage.lastIndexOf('.') + 1).toLowerCase();
+
+        if (extension == 'gif' || extension == 'png' || extension == 'jpg' || extension == 'jpeg') {
+
+            if (this.files && this.files[0]) {
+
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#apercu2').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(this.files[0]);
+            }
+        }
+    })
+
+    function uloapFile() {
+        var fileData = $("#img_en_avant").prop('files')[0];
+        var form = $("#mainImage")[0];
+        var formData = new FormData(form);
+        //console.log(form);
+        $.ajax({
+            url: "/mainImg",
+            type: "POST",
+            enctype: 'multipart/form-data',
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            success: function(msg) {
+                console.log(msg);
+                var val = msg.split("||");
+                if (val[0] == "true") {
+                    toastr["success"](val[1]);
+                }
+            }
+        })
+    }
+
+    function uploadGalery() {
+        //alert("ok");
+        var form = $("#imgGalery")[0];
+        var formData = new FormData(form);
+        //console.log(formData);
+        $.ajax({
+            url: "customer/otherImgs",
+            type: "POST",
+            enctype: 'multipart/form-data',
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            success: function(msg) {
+                console.log(msg);
+                var val = msg.split("||");
+                if (val[0] == "true") {
+                    toastr["success"](val[1]);
+                }
+            }
+        });
+    }
+
+
+
+    $(function() {
+        // Replace the <textarea id="editor1"> with a CKEditor
+        // instance, using default configuration.
+        CKEDITOR.replace('editor1')
+        //bootstrap WYSIHTML5 - text editor
+        //$('.textarea').wysihtml5()
+    })
+    $("#edititem").on("click", function() {
+        var itemid = $("input[name='itemid']").val();
+        var itemtitle = $("input[name='itemtitle']").val();
+        //var description = $("#editor1").val();
+        var description = CKEDITOR.instances.editor1.getData();
+        var itempricemax = $("input[name='itempricemax']").val();
+        var itempricemin = $("input[name='itempricemin']").val();
+        var datedebprom = $("input[name='datedebprom']").val();
+        var datefinprom = $("input[name='datefinprom']").val();
+        var category = document.getElementById("itemcategory").value;
+        var itemstock = $("input[name='itemstock']").val();
+        console.log(description);
+        $.ajax({
+            method: "POST",
+            url: "/itemedit",
+            data: {
+                itemstock: itemstock,
+                itemid: itemid,
+                itemtitle: itemtitle,
+                description: description,
+                itempricemax: itempricemax,
+                itempricemin: itempricemin,
+                datedebprom: datedebprom,
+                datefinprom: datefinprom,
+                category: category
+            },
+            success: function(msg) {
+                console.log(msg);
+                var val = msg.split("||");
+                if (val[0] == "true") {
+                    $.notify(val[1], "success");
+                    location.reload();
+                } else if (val[0] == "false") {
+                    $.notify(val[1], "danger");
+                }
+            }
+        });
+        return false;
+    })
+
+    function schedule() {
+        var x = document.getElementById("promo");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>

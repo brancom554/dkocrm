@@ -1,0 +1,33 @@
+<?php
+
+if ($iniObj->debugViews)
+    echo __FILE__;
+//$carouselActive = true;
+$title = "Validation || ".$iniObj->serviceName;
+include _VIEW_PATH . "/customer_common_header.phtml";
+?>
+
+<?php
+
+include _VIEW_PATH . "/customer_common_top_bar.phtml";
+?>
+
+<?php
+
+include _VIEW_PATH . $lib->lang . "/customer_menu.phtml";
+?>
+
+<section class="error-area ptb-70">
+    <div class="container">
+        <div class="error-content">
+            <img src="<?= $iniObj->UIPath ?>/img/check_icon.png" alt="image" style="width: 150px">
+            <h3>Success Order</h3>
+            <p></p>
+            <a href="/shop" class="default-btn"><i class="flaticon-left-chevron"></i> Back to Shoppage</a>
+        </div>
+    </div>
+</section>
+</section>
+
+<?php include _VIEW_PATH . $lib->lang . "/customer_common_footer.phtml"; ?>
+<?php include _VIEW_PATH . "/customer_common_include_files.phtml"; ?>
