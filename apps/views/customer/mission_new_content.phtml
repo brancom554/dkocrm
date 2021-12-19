@@ -69,6 +69,14 @@
 
                   </select>
                 </div>
+                <div class="form-group">
+                  <label for="mission_executor">Sélectionner un agent executeur</label>
+                  <select id="mission_executor" name="mission_executor" class="form-control">
+                    <?php foreach ($agents as $key => $agent) : ?>
+                      <option data-id="<?= $agent->user_id ?>" value="<?= $agent->user_id ?>"><?= $agent->firstname ?> <?= $agent->lastname ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
 
               </div>
               <!-- /.card-body -->
@@ -97,7 +105,7 @@
                 <br>
                 <input class="form-control form-control-sm" type="text" placeholder=".form-control-sm">
               </div> -->
-        <!-- /.card-body -->
+        <!-- /.card-body --
         <!-- </div> -->
         <!-- /.card -->
 
@@ -128,6 +136,7 @@
     var mission_date = $("#mission_date").val();
     var mission_contact = encodeURI($("#mission_contact").val());
     var mission_compagny = encodeURI($("#mission_compagny").val());
+    var executor_mission = encodeURI($("#mission_executor").val());
     // var current_date = Date().toString();
     // console.log(mission_date);
 
@@ -139,7 +148,8 @@
         mission_compagny: mission_compagny,
         mission_label: mission_label,
         mission_date: mission_date,
-        mission_contact: mission_contact
+        mission_contact: mission_contact,
+        executor_mission: executor_mission
       },
       success: function(msg) {
         console.log(msg);

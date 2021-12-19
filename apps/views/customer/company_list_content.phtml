@@ -43,7 +43,7 @@
                   ?>
                     <tr>
                       <td><?= $company->company_name ?></td>
-                      <td><?= $company->activity_area ?></td>
+                      <td><?= strtoupper($company->libelle) ?></td>
                       <td><?= ($company->company_type == 'private')? $lang->trl('Private') : $lang->trl('Public') ?></td>
                       <td><a href="/editcompany_<?= $company->company_id  ?>" class="btn btn-success btn-xs" title="<?= $lang->trl('Edit') ?>" data-id="<?= $company->company_id ?>" onclick=""><i class="fas fa-edit"></i></a> <a class="btn btn-default btn-xs" href="javascript:void(0)" data-id="<?= $company->company_id ?>" onclick="loadcommentmodal($(this).attr('data-id'))" title="<?= $lang->trl('Add Comment') ?>"><i class="fas fa-comment"></i></a><a href="/company_<?= $company->company_id  ?>" class="btn btn-primary btn-xs" title="<?= $lang->trl('View') ?>" data-id="<?= $company->company_id ?>" onclick=""><i class="fas fa-eye"></i></a></td>
                     </tr>

@@ -58,6 +58,14 @@
                  </p>
                </a>
              </li>
+             <?php if ($_SESSION['customer']['role_id'] == 1) : ?>
+                   <li class="nav-item">
+                     <a href="/categories" class="nav-link">
+                       <i class="fas fa-filter nav-icon"></i>
+                       <p><?= $lang->trl('Catégories') ?></p>
+                     </a>
+                   </li>
+                 <?php endif; ?>
              <li class="nav-item">
                <a href="#" class="nav-link <?= ($actvmenu == 'company') ? 'active' : '' ?>">
                  <i class="nav-icon fas fa-building"></i>
@@ -174,6 +182,16 @@
              </p>
            </a>
          </li>
+         <?php if ($_SESSION['customer']['role_id'] == 1) : ?>
+          <li class="nav-item ">
+            <a href="/geolocalisation" class="nav-link <?= ($actvmenu == 'geolocalisation') ? 'active' : '' ?>">
+              <i class="nav-icon fa fa-map-marker"></i>
+              <p>
+                <?= $lang->trl('Géolocalisation') ?>
+              </p>
+            </a>
+          </li>
+        <?php endif; ?>
          <?php if ($_SESSION['customer']['role_id'] == 1) : ?>
            <li class="nav-item">
              <a href="#" class="nav-link <?= ($actvmenu == 'user') ? 'active' : '' ?>">

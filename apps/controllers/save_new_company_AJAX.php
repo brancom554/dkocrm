@@ -20,6 +20,8 @@ if (isset($_REQUEST)) {
     $company_country = htmlspecialchars($_REQUEST['company_country'], ENT_QUOTES, "UTF-8");
     $code_naf = htmlspecialchars($_REQUEST['code_naf'], ENT_QUOTES, "UTF-8");
     $company_type = htmlspecialchars($_REQUEST['company_type'], ENT_QUOTES, "UTF-8");
+    $contact = htmlspecialchars($_REQUEST['contact'], ENT_QUOTES, "UTF-8");
+    $email = htmlspecialchars($_REQUEST['email'], ENT_QUOTES, "UTF-8");
     $web_site = htmlspecialchars($_REQUEST['web_site'], ENT_QUOTES, "UTF-8");
 
 
@@ -61,7 +63,7 @@ if (isset($_REQUEST)) {
             echo 'false||' . $lang->trl('This company already exists in our database');
             exit;
         } else {
-            $newcompany = $sqlData->insertNewCompany($company_name, $activity_area, $company_type, $code_naf);
+            $newcompany = $sqlData->insertNewCompany($company_name,$company_zipcode,$activity_area, $company_type, $code_naf,$contact,$email);
 
             if ($newcompany == true) {
                 $lastupdate = date('Y/m/d H:i:s');

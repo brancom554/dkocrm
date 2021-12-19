@@ -4,6 +4,10 @@
 //  die;
 switch ($page_requested) {
 
+    case "categories":
+        include "categories.php";
+        break;
+
     case "magasin":
         include "magasin_page.php";
         break;
@@ -74,6 +78,10 @@ switch ($page_requested) {
         break;
     case 'editcontact':
         include 'editcontact.php';
+        break;
+
+    case 'geolocalisation':
+        include 'geolocalisation.php';
         break;
     case "contacter":
     case "contact":

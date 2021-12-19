@@ -12,7 +12,7 @@ if ($_SESSION['customer']['role_id'] == 1) {
 
 $allmission = $mission['rows'];
 
-$companies = $sqlData->getCompanies();
+$companies = $sqlData->getCompanies($a);
 // $lib->debug($companies);
 // exit;
 $allcompanies = $companies['rows'];

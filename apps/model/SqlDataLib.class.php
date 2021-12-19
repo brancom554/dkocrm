@@ -1360,31 +1360,43 @@ class sqlDataLib
         return ($this->fetchData($q, array(":email" => $email)));
     }
 
-    function getCompanies($id = false)
+    function getAllCompanies()
     {
-        $q = "SELECT c.*, a.addresse_label as adress, a.city as city, a.country as country, a.postal as postal, a.lastupdate as lastupdate, a.active as active, a.website as website, con.contact_firstname as contact_firstname, con.contact_lastname as contact_lastname, con.contact_email as contact_email, con.phone_number as phone_number, con.title as contact_title  FROM companies c 
+        /*$q = "SELECT c.*, a.addresse_label as adress, a.city as city, a.country as country, a.postal as postal, a.lastupdate as lastupdate, a.active as active, a.website as website, con.contact_firstname as contact_firstname, con.contact_lastname as contact_lastname, con.contact_email as contact_email, con.phone_number as phone_number, con.title as contact_title  FROM companies c 
         INNER JOIN addresses a ON c.company_id = a.company_id 
-        INNER JOIN contacts con ON con.company_id = c.company_id";
-        if ($id == TRUE) {
+        INNER JOIN contacts con ON con.company_id = c.company_id";*/
+        $q = "SELECT c.*, a.addresse_label as adress, a.city as city, a.country as country, a.postal as postal, a.lastupdate as lastupdate, a.active as active, a.website as website FROM companies c 
+        INNER JOIN addresses a ON c.company_id = a.company_id";
+        
+        ///$q .= " ORDER BY company_id DESC";
+        return ($this->fetchData($q));
+    }
+
+    function getCompanies($id)
+    {
+        /*$q = "SELECT c.*, a.addresse_label as adress, a.city as city, a.country as country, a.postal as postal, a.lastupdate as lastupdate, a.active as active, a.website as website, con.contact_firstname as contact_firstname, con.contact_lastname as contact_lastname, con.contact_email as contact_email, con.phone_number as phone_number, con.title as contact_title  FROM companies c 
+        INNER JOIN addresses a ON c.company_id = a.company_id 
+        INNER JOIN contacts con ON con.company_id = c.company_id";*/
+        $q = "SELECT c.*, a.addresse_label as adress, a.city as city, a.country as country, a.postal as postal, a.lastupdate as lastupdate, a.active as active, a.website as website FROM companies c 
+        INNER JOIN addresses a ON c.company_id = a.company_id";
+        if (!empty($id)) {
             $q .= " WHERE c.company_id = '$id' ";
         }
-        $q .= " ORDER BY company_id DESC";
+        ///$q .= " ORDER BY company_id DESC";
         return ($this->fetchData($q));
     }
 
     function getCompAdre($id = false){
-        $q = "SELECT c.*, a.addresse_label as adress, a.city as city, a.country as country, a.postal as postal, a.lastupdate as lastupdate, a.active as active, a.website as website  FROM companies c 
-        INNER JOIN addresses a ON c.company_id = a.company_id ";
+        $q = "SELECT * FROM companies c";
         if ($id == TRUE) {
             $q .= " WHERE c.company_id = '$id' ";
         }
-        $q .= " ORDER BY company_id DESC";
         return ($this->fetchData($q));
     }
 
     function getCompagniesonly()
     {
-        $q = "SELECT c.*  FROM companies c 
+        $q = "SELECT c.*,libelle FROM companies c INNER JOIN categories ON c.categorie=categorie_id
         ORDER BY company_id DESC";
         return ($this->fetchData($q));
     }
@@ -1406,6 +1418,11 @@ class sqlDataLib
         }
         $q .= "ORDER BY contact_id DESC";
         return ($this->fetchData($q));
+    }
+
+    function getDataToTable($sql)
+    {
+        return ($this->fetchData($sql));
     }
 
     function getContactCompany($company){
@@ -1442,12 +1459,12 @@ class sqlDataLib
         return ($this->fetchData($q, array(":s_name" => $serviceByName)));
     }
 
-    function insertNewCompany($company_name, $activity_area, $company_type, $code_naf)
+    function insertNewCompany($company_name,$company_zipcode,$activity_area, $company_type, $code_naf,$contact,$email)
     {
         try {
             $sql = $this->db->Connect();
-            $q = 'INSERT INTO companies (company_name,activity_area, company_type,code_naf) ' .
-                ' VALUES ("' . $company_name . '","' . $activity_area . '","' . $company_type . '", "' . $code_naf . '")';
+            $q = 'INSERT INTO companies (company_name,company_zipcode,categorie, company_type,code_naf,contact,email) ' .
+                ' VALUES ("' . $company_name . '","' . $company_zipcode . '","' . $activity_area . '","' . $company_type . '", "' . $code_naf . '", "' . $contact . '", "' . $email . '")';
 
             $sql->beginTransaction();
             $res = $sql->prepare($q);
@@ -1552,12 +1569,12 @@ class sqlDataLib
         return $this->fetchData($q);
     }
 
-    function inserNewMission($mission_label, $mission_contact, $mission_compagny, $mission_date, $creation_date, $status, $active, $user_create)
+    function inserNewMission($mission_label, $mission_contact, $mission_compagny, $mission_date, $creation_date, $status, $active, $user_create,$executor_mission)
     {
         try {
             $sql = $this->db->Connect();
-            $q = 'INSERT INTO missions(mission_label,contact_id,company_id,mission_date,creation_date,status,active,created_by) ' .
-                ' VALUES ("' . $mission_label . '","' . $mission_contact . '","' . $mission_compagny . '","' . $mission_date . '","' . $creation_date . '","' . $status . '","' . $active . '","' . $user_create . '")';
+            $q = 'INSERT INTO missions(mission_label,contact_id,company_id,mission_date,creation_date,status,active,created_by,executor_mission) ' .
+                ' VALUES ("' . $mission_label . '","' . $mission_contact . '","' . $mission_compagny . '","' . $mission_date . '","' . $creation_date . '","' . $status . '","' . $active . '","' . $user_create . '","' . $executor_mission . '")';
             $sql->beginTransaction();
             $res = $sql->prepare($q);
             $sql->exec($q);
@@ -1581,10 +1598,10 @@ class sqlDataLib
             . "INNER JOIN companies cm ON cm.company_id = m.company_id "
             . "INNER JOIN users u ON u.user_id = m.created_by "
             . "INNER JOIN contacts c ON c.contact_id = m.contact_id ";
-        if ($user_id == TRUE) {
+        /*if ($user_id == TRUE) {
             $q .= "WHERE u.user_id = '$user_id' ";
         }
-        $q .= "ORDER BY m.mission_id DESC";
+        $q .= "ORDER BY m.mission_id DESC";*/
         return ($this->fetchData($q));
     }
 
@@ -2323,6 +2340,35 @@ class sqlDataLib
     {
         $q = "SELECT * FROM items ";
         return $this->fetchData($q);
+    }
+
+    function getAllCategories()
+    {
+        $q = "SELECT * FROM categories ";
+        return $this->fetchData($q);
+    }
+
+    function InsertCategorie($c,$d)
+    {
+        try {
+            $sql = $this->db->Connect();
+            $q = 'INSERT categories (categorie_id,libelle,img) ' .
+                ' VALUES (0,"' . $c . '","' . $d . '")';
+
+            $sql->beginTransaction();
+            $res = $sql->prepare($q);
+            $sql->exec($q);
+            //        $lastId=$sql->lastInsertId();
+            $sql->commit();
+            return (true);
+        } catch (Exception $e) { //en cas d'erreur
+            $sql->rollback();
+            if ($this->iniObj->debugSQL) {
+                $this->debugError($e);
+            }
+            return ($e);
+        }
+        return $this->insertQuery($q);
     }
 
     function updateCompany($company_id, $company_name, $activity_area, $company_type, $code_naf)

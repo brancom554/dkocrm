@@ -13,6 +13,7 @@ if (isset($_REQUEST)) {
     $mission_label = htmlspecialchars($_REQUEST['mission_label'], ENT_QUOTES, "UTF-8");
     $mission_compagny = htmlspecialchars($_REQUEST['mission_compagny'], ENT_QUOTES, "UTF-8");
     $mission_contact = htmlspecialchars($_REQUEST['mission_contact'], ENT_QUOTES, "UTF-8");
+    $executor_mission = htmlspecialchars($_REQUEST['executor_mission'], ENT_QUOTES, "UTF-8");
     $mission_date = $_REQUEST['mission_date'];
     $reformat_mdate = date("Y/m/d H:i:s", strtotime($_REQUEST['mission_date']));
 
@@ -39,7 +40,7 @@ if (isset($_REQUEST)) {
         $status = 1;
         $active = 1;
         $user_create = $_SESSION['customer']['user_id'];
-        $newMission = $sqlData->inserNewMission($mission_label, $mission_contact, $mission_compagny, $reformat_mdate, $creation_date, $status, $active, $user_create);
+        $newMission = $sqlData->inserNewMission($mission_label, $mission_contact, $mission_compagny, $reformat_mdate, $creation_date, $status, $active, $user_create,$executor_mission);
         // $lib->debug($newMission);
         // exit;
         if ($newMission == 1) {

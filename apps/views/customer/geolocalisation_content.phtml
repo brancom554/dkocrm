@@ -1,0 +1,110 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1><?= $lang->trl('Geolocalisation') ?> 
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="/customer/dashboard"><?= $lang->trl('Home') ?></a></li>
+            <li class="breadcrumb-item active"><?= $lang->trl('Geolocalisation') ?></li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <style>
+    .map {
+      height: 700px;
+      width: 100%;
+    }
+  </style>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><?= $lang->trl('Missions List') ?></h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <div id="map" class="map"></div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Page specific script -->
+
+<div class="modal fade" id="missiondetail">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><?= $lang->trl('Mission') ?></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="details">
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?= $lang->trl('Close') ?></button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<script>
+  function loadModal(id) {
+    $.ajax({
+      method: "POST",
+      url: "/customer/loadmission",
+      data: {
+        id: id
+      },
+      success: function(msg) {
+        //console.log(msg);
+        $("#details").html(msg);
+        $("#missiondetail").modal("show");
+      }
+    })
+  }
+
+  function act(mission_id) {
+    // console.log(mission_id)
+    $.ajax({
+      method: "POST",
+      url: "/customer/mission_done/",
+      data: {
+        mission_id: mission_id
+      },
+      success: function(msg) {
+        console.log(msg)
+        var val = msg.split("||");
+        if (val[0] == "true") {
+          toastr["success"](val[1]);
+          location.reload();
+        }else if(val[0] == "false"){
+          toastr["error"](val[1]);
+        }
+      }
+    })
+  }
+</script>

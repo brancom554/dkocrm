@@ -1,0 +1,76 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1><?= $lang->trl('Ajouter une nouvelle categorie') ?></h1>
+        </div>
+        <!-- <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Ajouter un contact</li>
+          </ol>
+        </div> -->
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-8">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title"><?= $lang->trl('Ajouter une nouvelle categorie') ?></h3>
+            </div>
+
+            <header class="text-center mb-4">
+              <div class="text-danger">
+                <h6 id="error_message"></h6>
+              </div>
+              <div class="text-success">
+                <h6 id="success_message"></h6>
+              </div>
+            </header>
+            <!-- /.card-header -->
+            <!-- form start -->
+
+            <form action="" method="POST" enctype="multipart/form-data">
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="name"><?= $lang->trl('Nom de la catégorie') ?></label>
+                  <input type="text" name="name" class="form-control" id="name" placeholder="John">
+                </div>
+                <div class="form-group">
+                    <label >Sélectionner une image pour a categorie</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" name="avatar" class="custom-file-input" id="avatar" required>
+                        <label class="custom-file-label" for="avatar">Sélectionner une image</label>
+                      </div>
+                      <div class="input-group-append">
+                        <span class="input-group-text">Uploader</span>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="card-footer">
+                <button type="submit" name="save" id="submit_contact" class="btn btn-primary pull-right"><?= $lang->trl('Submit') ?></button>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+
+
+        </div>
+
+      </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

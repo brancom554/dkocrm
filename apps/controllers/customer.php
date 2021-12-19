@@ -40,6 +40,7 @@ $sub_page = $url_array[2];
 //  die;
 $title = $lang->trl($iniObj->serviceName);
 switch ($sub_page) {
+        
     case "dashboard":
         include "home_page.php";
         break;

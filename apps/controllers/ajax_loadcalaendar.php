@@ -36,4 +36,5 @@ foreach ($missions as $key => $mission) {
 }
 
 echo json_encode($data);
+//echo json_encode($missions);
 exit;

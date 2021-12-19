@@ -319,7 +319,15 @@
                 </div>
                 <div class="form-group">
                   <label for="activity_area"><?= $lang->trl('Field of activity') ?></label>
-                  <input type="text" name="activity_area" class="form-control" id="activity_area" placeholder="<?= $lang->trl('Field of activity') ?>" onkeypress="return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode==32)">
+                  <select class="form-control" name="activity_area" id="activity_area">
+                    <option value=""> --<?= $lang->trl('Choose a type') ?>-- </option>
+                      <?php foreach ($categories as $value) :?>
+                        
+                      <option value="<?= $value->categorie_id ?>"><?= $value->libelle ?></option>
+                      
+                      <?php endforeach;?>
+                  </select>
+                  
                 </div>
                 <div class="form-group">
                   <label for="company_type"><?= $lang->trl('Company type') ?></label>
@@ -332,6 +340,14 @@
                 <div class="form-group">
                   <label for="code_naf"><?= $lang->trl('Code NAF') ?></label>
                   <input type="text" name="code_naf" class="form-control pull-right" id="code_naf">
+                </div>
+                <div class="form-group">
+                  <label for="email"><?= $lang->trl('Email') ?></label>
+                  <input type="text" name="email" placeholder="Ex : test@test.com" required class="form-control pull-right" id="email">
+                </div>
+                <div class="form-group">
+                  <label for="contact"><?= $lang->trl('Contact') ?></label>
+                  <input type="text" name="contact" placeholder="Ex : +229 97XXXXXX" required class="form-control pull-right" id="contact">
                 </div>
                 <div class="form-group">
                   <label for="web_site"><?= $lang->trl('Web Site') ?></label>
@@ -426,6 +442,8 @@
     var activity_area = encodeURIComponent($("#activity_area").val());
     var company_type = encodeURIComponent($("#company_type").val());
     var code_naf = encodeURIComponent($("#code_naf").val());
+    var contact = encodeURIComponent($("#contact").val());
+    var email = encodeURIComponent($("#email").val());
     var web_site = encodeURIComponent($("#web_site").val());
 
     // alert(code_naf)
@@ -441,6 +459,8 @@
         activity_area: activity_area,
         company_type: company_type,
         code_naf: code_naf,
+        contact: contact,
+        email: email,
         web_site : web_site
       },
 
